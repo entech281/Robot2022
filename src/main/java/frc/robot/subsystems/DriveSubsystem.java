@@ -2,14 +2,22 @@ package frc.robot.subsystems;
 
 import frc.robot.RobotConstants;
 
+import com.kauailabs.navx.frc.*;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+
+
 public class DriveSubsystem extends EntechSubsystem {
+
+
 
     private CANSparkMax frontLeftSpark;
     private CANSparkMax frontRightSpark;
@@ -25,6 +33,10 @@ public class DriveSubsystem extends EntechSubsystem {
     private MotorControllerGroup rightMotorController;
     private DifferentialDrive robotDrive;
 
+    private AHRS navX;
+
+
+
     @Override
     public void initialize() {
         frontLeftSpark = new CANSparkMax(RobotConstants.CAN.FRONT_LEFT_MOTOR, MotorType.kBrushless);
@@ -39,6 +51,7 @@ public class DriveSubsystem extends EntechSubsystem {
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
         robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
+        navX = new AHRS(SPI.Port.kMXP);
     }
 
     public void feedWatchDog(){
@@ -52,10 +65,19 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition());
         logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition());
         logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition());
+        logger.log("navX angle", getAngle());
     }
 
     public void arcadeDrive(double forward, double rotation) {
         robotDrive.arcadeDrive(forward, rotation);
         feedWatchDog();
     }
+
+
+    public double getAngle() {
+    return navX.getAngle();
+    }
+    
+
+
 }
