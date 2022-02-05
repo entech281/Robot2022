@@ -5,12 +5,19 @@ import frc.robot.RobotConstants;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-public class DriveSubsystem extends EntechSubsystem {
+//ask Andrews why these things arent in here, because whe have it in the Romi but not in Robot 2022
+/*
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+*/
+
+public class DriveStraightSubsystem extends EntechSubsystem {
+
     private CANSparkMax frontLeftSpark;
     private CANSparkMax frontRightSpark;
     private CANSparkMax rearLeftSpark;
@@ -24,27 +31,21 @@ public class DriveSubsystem extends EntechSubsystem {
     private MotorControllerGroup leftMotorController;
     private MotorControllerGroup rightMotorController;
     private DifferentialDrive robotDrive;
- 
+
     @Override
     public void initialize() {
-
         frontLeftSpark = new CANSparkMax(RobotConstants.CAN.FRONT_LEFT_MOTOR, MotorType.kBrushless);
         rearLeftSpark = new CANSparkMax(RobotConstants.CAN.REAR_LEFT_MOTOR, MotorType.kBrushless);
+        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
+
         frontRightSpark = new CANSparkMax(RobotConstants.CAN.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
         rearRightSpark = new CANSparkMax(RobotConstants.CAN.REAR_RIGHT_MOTOR, MotorType.kBrushless);
-        frontLeftSpark.setInverted(true);
-        rearLeftSpark.setInverted(true);
-        frontRightSpark.setInverted(false);
-        rearRightSpark.setInverted(false);
-
-        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
         rightMotorController = new MotorControllerGroup(frontRightSpark, rearRightSpark);
-        robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
-
         frontLeftEncoder = frontLeftSpark.getEncoder();
         frontRightEncoder = frontRightSpark.getEncoder();
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
+        robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
     }
 
     public void feedWatchDog(){
@@ -64,20 +65,4 @@ public class DriveSubsystem extends EntechSubsystem {
         robotDrive.arcadeDrive(forward, rotation);
         feedWatchDog();
     }
-
-    public void resetEncoders(){
-        frontLeftEncoder.setPosition(0);
-        frontRightEncoder.setPosition(0);
-        rearRightEncoder.setPosition(0);
-        rearLeftEncoder.setPosition(0);
-    }
-
-public double getLeftDistance() {
-    return (0.5 * (frontLeftEncoder.getPosition() + rearLeftEncoder.getPosition()));
-}
-
-public double getRightDistance() {
-        return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
-}
-
 }
