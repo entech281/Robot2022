@@ -1,11 +1,14 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.util.Color;
+
 // Exercise 2: Add the OnboardIO subsystem to the subsystem manager.  
 // This involves storing the subsystem privately in this class, initializing it, and providing a get method.
 // You can use the drive subsystem as an example.
 
 public class SubsystemManager {
     private DriveSubsystem driveSubsystem;
+    private ColorSensor colorSensor;
 
     public SubsystemManager() {
     }
@@ -14,10 +17,15 @@ public class SubsystemManager {
         return driveSubsystem;
     }
 
+    public ColorSensor getColorSensor() {
+        return colorSensor;
+    }
 
     public void initAll() {
         driveSubsystem = new DriveSubsystem();
+        colorSensor = new ColorSensor();
 
         driveSubsystem.initialize();
+        colorSensor.initialize();
     }
 }
