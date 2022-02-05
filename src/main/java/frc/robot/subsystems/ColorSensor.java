@@ -54,5 +54,17 @@ public class ColorSensor extends EntechSubsystem{
 
       
   }
+
+  @Override
+  public void periodic() {
+
+      String ball = getSensorColor();
+
+
+      logger.log("ball color", ball);
+
+      }
+
+
     
 }
