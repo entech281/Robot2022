@@ -68,6 +68,10 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition());
         logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition());
         logger.log("navX angle", getAngle());
+        logger.log("acceleration x", navX.getRawAccelX());
+        logger.log("acceleration y", navX.getRawAccelY());
+        logger.log("displacement x", navX.getDisplacementX());
+        logger.log("displacement y", navX.getDisplacementY());
     }
 
     public void arcadeDrive(double forward, double rotation) {
