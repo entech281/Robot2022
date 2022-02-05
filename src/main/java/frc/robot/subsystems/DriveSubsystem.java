@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotConstants;
-
 import com.kauailabs.navx.frc.*;
 
 import com.revrobotics.RelativeEncoder;
@@ -11,8 +10,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-
-
 
 public class DriveSubsystem extends EntechSubsystem {
     private CANSparkMax frontLeftSpark;
@@ -67,6 +64,10 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition());
         logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition());
         logger.log("navX angle", getAngle());
+        logger.log("navX acceleration x", navX.getRawAccelX());
+        logger.log("navX acceleration y", navX.getRawAccelY());
+        logger.log("navX displacement x", navX.getDisplacementX());
+        logger.log("navX displacement y", navX.getDisplacementY());
     }
 
     public void arcadeDrive(double forward, double rotation) {
