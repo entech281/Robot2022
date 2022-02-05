@@ -8,7 +8,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -16,8 +15,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 
 public class DriveSubsystem extends EntechSubsystem {
-
-
 
     private CANSparkMax frontLeftSpark;
     private CANSparkMax frontRightSpark;
@@ -35,21 +32,24 @@ public class DriveSubsystem extends EntechSubsystem {
 
     private AHRS navX;
 
-
-
     @Override
     public void initialize() {
         frontLeftSpark = new CANSparkMax(RobotConstants.CAN.FRONT_LEFT_MOTOR, MotorType.kBrushless);
         rearLeftSpark = new CANSparkMax(RobotConstants.CAN.REAR_LEFT_MOTOR, MotorType.kBrushless);
-        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
-
         frontRightSpark = new CANSparkMax(RobotConstants.CAN.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
         rearRightSpark = new CANSparkMax(RobotConstants.CAN.REAR_RIGHT_MOTOR, MotorType.kBrushless);
-        rightMotorController = new MotorControllerGroup(frontRightSpark, rearRightSpark);
+        frontLeftSpark.setInverted(false);
+        rearLeftSpark.setInverted(false);
+        frontRightSpark.setInverted(true);
+        rearRightSpark.setInverted(true);
+
         frontLeftEncoder = frontLeftSpark.getEncoder();
         frontRightEncoder = frontRightSpark.getEncoder();
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
+
+        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
+        rightMotorController = new MotorControllerGroup(frontRightSpark, rearRightSpark);
         robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
         navX = new AHRS(SPI.Port.kMXP);
     }
@@ -73,11 +73,8 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-
     public double getAngle() {
-    return navX.getAngle();
+        return navX.getAngle();
     }
-    
-
 
 }

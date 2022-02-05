@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 public class SubsystemManager {
     private DriveSubsystem driveSubsystem;
+    private ColorSensorSubsystem colorSensorSubsystem;
 
     public SubsystemManager() {
     }
@@ -14,10 +15,16 @@ public class SubsystemManager {
         return driveSubsystem;
     }
 
+    public ColorSensorSubsystem getColorSensorSubsystem() {
+        return colorSensorSubsystem;
+    }
+
 
     public void initAll() {
         driveSubsystem = new DriveSubsystem();
+        colorSensorSubsystem = new ColorSensorSubsystem();
 
         driveSubsystem.initialize();
+        colorSensorSubsystem.initialize();
     }
 }
