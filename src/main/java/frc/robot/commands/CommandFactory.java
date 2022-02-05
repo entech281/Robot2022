@@ -13,6 +13,10 @@ public class CommandFactory {
         this.sm = subsystemManager;
     }
 
+    public Command getDriveStraightCommand(double distance,double speed){
+        return new DriveStraightCommand(sm.getDriveSubsystem(), distance, speed);
+    }
+
     public Command getAutonomousCommand(){
         return null;
     }

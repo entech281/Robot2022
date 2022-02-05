@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 
 public class DriveSubsystem extends EntechSubsystem {
-
     private CANSparkMax frontLeftSpark;
     private CANSparkMax frontRightSpark;
     private CANSparkMax rearLeftSpark;
@@ -34,23 +33,25 @@ public class DriveSubsystem extends EntechSubsystem {
 
     @Override
     public void initialize() {
+
         frontLeftSpark = new CANSparkMax(RobotConstants.CAN.FRONT_LEFT_MOTOR, MotorType.kBrushless);
         rearLeftSpark = new CANSparkMax(RobotConstants.CAN.REAR_LEFT_MOTOR, MotorType.kBrushless);
         frontRightSpark = new CANSparkMax(RobotConstants.CAN.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
         rearRightSpark = new CANSparkMax(RobotConstants.CAN.REAR_RIGHT_MOTOR, MotorType.kBrushless);
-        frontLeftSpark.setInverted(false);
-        rearLeftSpark.setInverted(false);
-        frontRightSpark.setInverted(true);
-        rearRightSpark.setInverted(true);
+        frontLeftSpark.setInverted(true);
+        rearLeftSpark.setInverted(true);
+        frontRightSpark.setInverted(false);
+        rearRightSpark.setInverted(false);
+
+        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
+        rightMotorController = new MotorControllerGroup(frontRightSpark, rearRightSpark);
+        robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
 
         frontLeftEncoder = frontLeftSpark.getEncoder();
         frontRightEncoder = frontRightSpark.getEncoder();
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
 
-        leftMotorController = new MotorControllerGroup(frontLeftSpark, rearLeftSpark);
-        rightMotorController = new MotorControllerGroup(frontRightSpark, rearRightSpark);
-        robotDrive = new DifferentialDrive(leftMotorController, rightMotorController);
         navX = new AHRS(SPI.Port.kMXP);
     }
 
@@ -77,4 +78,18 @@ public class DriveSubsystem extends EntechSubsystem {
         return navX.getAngle();
     }
 
+    public void resetEncoders(){
+        frontLeftEncoder.setPosition(0);
+        frontRightEncoder.setPosition(0);
+        rearRightEncoder.setPosition(0);
+        rearLeftEncoder.setPosition(0);
+    }
+
+    public double getLeftDistance() {
+        return (0.5 * (frontLeftEncoder.getPosition() + rearLeftEncoder.getPosition()));
+    }
+
+    public double getRightDistance() {
+        return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
+    }
 }
