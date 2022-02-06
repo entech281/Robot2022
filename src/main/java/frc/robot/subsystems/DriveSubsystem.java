@@ -68,6 +68,8 @@ public class DriveSubsystem extends EntechSubsystem {
     DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading(), pose);
     RamseteController trajectoryController = new RamseteController(RobotConstants.DRIVETRAIN_CONSTANTS.kRamseteB, RobotConstants.DRIVETRAIN_CONSTANTS.kRamseteZeta);
 
+    public  Trajectory trajectory;
+
 
     @Override
     public void initialize() {
@@ -127,6 +129,13 @@ public class DriveSubsystem extends EntechSubsystem {
         leftPID.setSmartMotionMaxAccel(RobotConstants.DRIVETRAIN_CONSTANTS.rmaxAcc, smartMotionSlotRight);
         leftPID.setSmartMotionAllowedClosedLoopError(RobotConstants.DRIVETRAIN_CONSTANTS.rAllowedErr, smartMotionSlotRight);
 
+       trajectory = 
+       TrajectoryGenerator.generateTrajectory(
+       theBeginning,
+       List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+       theEnd,
+       new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+       
         robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
         navX = new AHRS(SPI.Port.kMXP);
 
@@ -187,13 +196,8 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-    //sample trajectory for testing
-    public Trajectory trajectory = 
-    TrajectoryGenerator.generateTrajectory(
-       new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
-       List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-       new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
-       new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+    Pose2d theBeginning = new Pose2d();
+    Pose2d theEnd = new Pose2d(3,0, Rotation2d.fromDegrees(0));
 
 
     public double getAngle() {
@@ -247,8 +251,6 @@ public class DriveSubsystem extends EntechSubsystem {
 
     }
 
-
-
     public void setSpeedMax(double xSpeed) {
         robotDrive.setMaxOutput(xSpeed);
       }
@@ -274,14 +276,13 @@ public class DriveSubsystem extends EntechSubsystem {
     
         public void driveTrajectory(Trajectory trajectory) {
         
-        RamseteCommand ramseteCommand1 = new RamseteCommand(
+        RamseteCommand ramseteCommand = new RamseteCommand(
         trajectory, 
         this::getPose, 
         trajectoryController, 
         RobotConstants.DRIVETRAIN_CONSTANTS.kinematics, 
         this::driveVelocity, 
         this);
-
 
 
         }
