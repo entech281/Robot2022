@@ -4,6 +4,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2022.1.1"
     id "eclipse"
+    id "idea"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11

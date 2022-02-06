@@ -82,5 +82,7 @@ public final class RobotConstants {
         public static final double rmaxAcc = 1;
         public static final double rAllowedErr = 1;
 
+        public static final double ramseteToleranceInches = 4;
+        public static final double ramseteToleranceDegrees = 45;
     }
 }

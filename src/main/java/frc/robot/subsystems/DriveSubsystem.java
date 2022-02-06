@@ -37,6 +37,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
+import java.io.*;
+import java.io.IOException;
+
 
 
 
@@ -56,7 +59,7 @@ public class DriveSubsystem extends EntechSubsystem {
 
     private MotorControllerGroup leftMotorController;
     private MotorControllerGroup rightMotorController;
-    private DifferentialDrive robotDrive;
+    public DifferentialDrive robotDrive;
 
     private  SparkMaxPIDController leftPID;
     private  SparkMaxPIDController rightPID;
@@ -129,16 +132,16 @@ public class DriveSubsystem extends EntechSubsystem {
         leftPID.setSmartMotionMaxAccel(RobotConstants.DRIVETRAIN_CONSTANTS.rmaxAcc, smartMotionSlotRight);
         leftPID.setSmartMotionAllowedClosedLoopError(RobotConstants.DRIVETRAIN_CONSTANTS.rAllowedErr, smartMotionSlotRight);
 
-       trajectory = 
-       TrajectoryGenerator.generateTrajectory(
-       theBeginning,
-       List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-       theEnd,
-       new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
-       
-        robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
-        navX = new AHRS(SPI.Port.kMXP);
 
+        trajectory = 
+        TrajectoryGenerator.generateTrajectory(
+        theBeginning,
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        theEnd,
+        new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+        
+         robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
+         navX = new AHRS(SPI.Port.kMXP);
         
     }
 
@@ -196,8 +199,8 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-    Pose2d theBeginning = new Pose2d();
-    Pose2d theEnd = new Pose2d(3,0, Rotation2d.fromDegrees(0));
+    public Pose2d theBeginning = new Pose2d();
+    public Pose2d theEnd = new Pose2d(3,0, Rotation2d.fromDegrees(0));
 
 
     public double getAngle() {
@@ -227,6 +230,10 @@ public class DriveSubsystem extends EntechSubsystem {
     public Pose2d getPose() {
         return pose;
       }
+
+    public Trajectory getTrajectory(){
+        return trajectory;
+    }
 
     public DifferentialDriveWheelSpeeds getSpeeds(){
 
@@ -274,7 +281,7 @@ public class DriveSubsystem extends EntechSubsystem {
     //public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
 
     
-        public void driveTrajectory(Trajectory trajectory) {
+        public RamseteCommand getRamseteCommand(Trajectory trajectory) {
         
         RamseteCommand ramseteCommand = new RamseteCommand(
         trajectory, 
@@ -284,8 +291,12 @@ public class DriveSubsystem extends EntechSubsystem {
         this::driveVelocity, 
         this);
 
+        return ramseteCommand;
+
+
 
         }
+
 
 
 
