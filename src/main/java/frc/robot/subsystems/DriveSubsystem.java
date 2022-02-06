@@ -1,19 +1,25 @@
 package frc.robot.subsystems;
 
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.subsystems.ColorSensor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kauailabs.navx.frc.*;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.apache.commons.math3.analysis.function.Sigmoid;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -52,12 +58,16 @@ public class DriveSubsystem extends EntechSubsystem {
     private MotorControllerGroup rightMotorController;
     private DifferentialDrive robotDrive;
 
+    private  SparkMaxPIDController leftPID;
+    private  SparkMaxPIDController rightPID;
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(RobotConstants.DRIVETRAIN_CONSTANTS.ksVolts,RobotConstants.DRIVETRAIN_CONSTANTS.kvVoltSecondsPerMeter,RobotConstants.DRIVETRAIN_CONSTANTS.kaVoltSecondsSquaredPerMeter);
+
     private AHRS navX;
     
     Pose2d pose = new Pose2d();
-    DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics((RobotConstants.DRIVETRAIN_CONSTANTS.trackwidth));
     DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading(), pose);
     RamseteController trajectoryController = new RamseteController(RobotConstants.DRIVETRAIN_CONSTANTS.kRamseteB, RobotConstants.DRIVETRAIN_CONSTANTS.kRamseteZeta);
+
 
     @Override
     public void initialize() {
@@ -76,6 +86,9 @@ public class DriveSubsystem extends EntechSubsystem {
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
 
+        leftPID = frontLeftSpark.getPIDController();
+        rightPID = frontRightSpark.getPIDController();
+
         frontLeftEncoder.setVelocityConversionFactor(RobotConstants.DRIVETRAIN_CONSTANTS.velocityConversionFactor);
         frontRightEncoder.setVelocityConversionFactor(RobotConstants.DRIVETRAIN_CONSTANTS.velocityConversionFactor);
         rearLeftEncoder.setVelocityConversionFactor(RobotConstants.DRIVETRAIN_CONSTANTS.velocityConversionFactor);
@@ -86,11 +99,38 @@ public class DriveSubsystem extends EntechSubsystem {
         rearLeftEncoder.setVelocityConversionFactor(RobotConstants.DRIVETRAIN_CONSTANTS.positionConversionFacotr);
         rearRightEncoder.setVelocityConversionFactor(RobotConstants.DRIVETRAIN_CONSTANTS.positionConversionFacotr);
 
+
+        leftPID.setP(RobotConstants.DRIVETRAIN_CONSTANTS.lkP);
+        leftPID.setI(RobotConstants.DRIVETRAIN_CONSTANTS.lkI);
+        leftPID.setD(RobotConstants.DRIVETRAIN_CONSTANTS.lkD);
+        leftPID.setIZone(RobotConstants.DRIVETRAIN_CONSTANTS.lkIz);
+        leftPID.setFF(RobotConstants.DRIVETRAIN_CONSTANTS.lkFF);
+        leftPID.setOutputRange(RobotConstants.DRIVETRAIN_CONSTANTS.lkMinOutput, RobotConstants.DRIVETRAIN_CONSTANTS.lkMaxOutput);
+
+        int smartMotionSlotLeft = 0;
+        leftPID.setSmartMotionMaxVelocity(RobotConstants.DRIVETRAIN_CONSTANTS.lmaxVel, smartMotionSlotLeft);
+        leftPID.setSmartMotionMinOutputVelocity(RobotConstants.DRIVETRAIN_CONSTANTS.lminVel, smartMotionSlotLeft);
+        leftPID.setSmartMotionMaxAccel(RobotConstants.DRIVETRAIN_CONSTANTS.lmaxAcc, smartMotionSlotLeft);
+        leftPID.setSmartMotionAllowedClosedLoopError(RobotConstants.DRIVETRAIN_CONSTANTS.lAllowedErr, smartMotionSlotLeft);
+
+        leftPID.setP(RobotConstants.DRIVETRAIN_CONSTANTS.rkP);
+        leftPID.setI(RobotConstants.DRIVETRAIN_CONSTANTS.rkI);
+        leftPID.setD(RobotConstants.DRIVETRAIN_CONSTANTS.rkD);
+        leftPID.setIZone(RobotConstants.DRIVETRAIN_CONSTANTS.rkIz);
+        leftPID.setFF(RobotConstants.DRIVETRAIN_CONSTANTS.rkFF);
+        leftPID.setOutputRange(RobotConstants.DRIVETRAIN_CONSTANTS.rkMinOutput, RobotConstants.DRIVETRAIN_CONSTANTS.rkMaxOutput);
+        
+
+        int smartMotionSlotRight = 0;
+        leftPID.setSmartMotionMaxVelocity(RobotConstants.DRIVETRAIN_CONSTANTS.rmaxVel, smartMotionSlotRight);
+        leftPID.setSmartMotionMinOutputVelocity(RobotConstants.DRIVETRAIN_CONSTANTS.rminVel, smartMotionSlotRight);
+        leftPID.setSmartMotionMaxAccel(RobotConstants.DRIVETRAIN_CONSTANTS.rmaxAcc, smartMotionSlotRight);
+        leftPID.setSmartMotionAllowedClosedLoopError(RobotConstants.DRIVETRAIN_CONSTANTS.rAllowedErr, smartMotionSlotRight);
+
         robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
         navX = new AHRS(SPI.Port.kMXP);
 
-
-
+        
     }
 
     public void feedWatchDog(){
@@ -147,34 +187,21 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-    public Trajectory generateTrajectory() {
-
-        var currentPos = new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0),
-            Rotation2d.fromDegrees(0));
-        var endpoint = new Pose2d(Units.feetToMeters(3), Units.feetToMeters(4),
-            Rotation2d.fromDegrees(45));
-    
-        var interiorWaypoints = new ArrayList<Translation2d>();
-        interiorWaypoints.add(new Translation2d(Units.feetToMeters(1), Units.feetToMeters(2)));
-        interiorWaypoints.add(new Translation2d(Units.feetToMeters(2), Units.feetToMeters(3)));
-    
-        TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(2), Units.feetToMeters(.5));
-        config.setReversed(false);
-    
-        var trajectory = TrajectoryGenerator.generateTrajectory(
-            currentPos,
-            interiorWaypoints,
-            endpoint,
-            config);
-            
-            return trajectory;
-      }
-
-
+    //sample trajectory for testing
+    public Trajectory trajectory = 
+    TrajectoryGenerator.generateTrajectory(
+       new Pose2d(0, 0, Rotation2d.fromDegrees(0)),
+       List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+       new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
+       new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
 
 
     public double getAngle() {
         return navX.getAngle();
+    }
+
+    public double getTurnRate() {
+        return navX.getRate();
     }
 
     public void resetGyro() {
@@ -203,13 +230,16 @@ public class DriveSubsystem extends EntechSubsystem {
         double rightSpeeds = frontRightEncoder.getVelocity();
 
     return new DifferentialDriveWheelSpeeds(leftSpeeds,rightSpeeds);
-    }
+    
+}
 
     public DifferentialDriveKinematics getKinematics() {
-        return kinematics;
+
+        return RobotConstants.DRIVETRAIN_CONSTANTS.kinematics;
       }
     
     public void resetEncoders() {
+
         frontRightEncoder.setPosition(0);
         frontLeftEncoder.setPosition(0);
         rearRightEncoder.setPosition(0);
@@ -217,10 +247,21 @@ public class DriveSubsystem extends EntechSubsystem {
 
     }
 
+
+
+    public void setSpeedMax(double xSpeed) {
+        robotDrive.setMaxOutput(xSpeed);
+      }
+
     public void driveVolts(double leftVolts, double rightVolts){
         frontLeftSpark.setVoltage(leftVolts);
         frontRightSpark.setVoltage(rightVolts);
         robotDrive.feedWatchdog();
+    }
+
+    public void driveVelocity(double leftVelocity, double rightVelocity) {
+        leftPID.setReference(leftVelocity, ControlType.kSmartVelocity);
+        rightPID.setReference(rightVelocity, ControlType.kSmartVelocity);
     }
 
     public void setMaxOutput(double maxOutput) {
@@ -228,7 +269,22 @@ public class DriveSubsystem extends EntechSubsystem {
 
     }
 
+    //public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose) {
 
+    
+        public void driveTrajectory(Trajectory trajectory) {
+        
+        RamseteCommand ramseteCommand1 = new RamseteCommand(
+        trajectory, 
+        this::getPose, 
+        trajectoryController, 
+        RobotConstants.DRIVETRAIN_CONSTANTS.kinematics, 
+        this::driveVelocity, 
+        this);
+
+
+
+        }
 
 
 

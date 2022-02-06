@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -35,6 +37,9 @@ public final class RobotConstants {
         //meters
         public static final double trackwidth = 10;
 
+        //lol exdeee
+        DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics((trackwidth));
+
         // *I think* velocity is rpm, convert to meters per second. Position is encoder clicks, convert to meters
         public static final double velocityConversionFactor = 1024;
         public static final double positionConversionFacotr = 1;
@@ -48,6 +53,34 @@ public final class RobotConstants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 0;
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
+
+        //SparkMax pid controller values left side drivetrain
+        public static final double lkP = 1;
+        public static final double lkI = 1;
+        public static final double lkD = 1;
+        public static final double lkIz = 1;
+        public static final double lkFF = 1;
+        public static final double lkMaxOutput = 1;
+        public static final double lkMinOutput = 1;
+        public static final double lmaxRPM = 1;
+        public static final double lmaxVel = 1;
+        public static final double lminVel = 1;
+        public static final double lmaxAcc = 1;
+        public static final double lAllowedErr = 1;
+
+        //right side drivetrain
+        public static final double rkP = 1;
+        public static final double rkI = 1;
+        public static final double rkD = 1;
+        public static final double rkIz = 1;
+        public static final double rkFF = 1;
+        public static final double rkMaxOutput = 1;
+        public static final double rkMinOutput = 1;
+        public static final double rmaxRPM = 1;
+        public static final double rmaxVel = 1;
+        public static final double rminVel = 1;
+        public static final double rmaxAcc = 1;
+        public static final double rAllowedErr = 1;
 
     }
 }
