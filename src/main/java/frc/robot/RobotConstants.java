@@ -30,4 +30,24 @@ public final class RobotConstants {
     }
     public interface DIGITAL_IO {
     }
+    public interface DRIVETRAIN_CONSTANTS {
+
+        //meters
+        public static final double trackwidth = 10;
+
+        // *I think* velocity is rpm, convert to meters per second. Position is encoder clicks, convert to meters
+        public static final double velocityConversionFactor = 1024;
+        public static final double positionConversionFacotr = 1;
+
+        // Characterization values
+        public static final double ksVolts = 0;
+        public static final double kvVoltSecondsPerMeter = 0;
+        public static final double kaVoltSecondsSquaredPerMeter = 0;
+        public static final double kPDriveVel = 0;
+        public static final double kMaxSpeedMetersPerSecond = 0;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
+
+    }
 }
