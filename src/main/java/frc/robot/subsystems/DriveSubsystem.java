@@ -11,6 +11,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.apache.commons.math3.analysis.function.Sigmoid;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -90,6 +92,33 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
+    public void rampingDrive(double x, double y) {
+        
+        double scaledX;
+        double scaledY;
+
+        Sigmoid positiveSigmoid = new Sigmoid(0, 1);
+        Sigmoid negativeSigmoid = new Sigmoid(-1,0);
+
+        if (x > 1){
+        scaledX = positiveSigmoid.value(x);
+        } else if (x < 1) {
+        scaledX = negativeSigmoid.value(x);
+        } else {
+            scaledX = x;
+        }
+
+        if (y > 1){
+        scaledY = positiveSigmoid.value(y);
+        } else if (y < 1) {
+        scaledY = negativeSigmoid.value(y);
+        } else {
+            scaledY = y;
+        }
+        robotDrive.arcadeDrive(scaledX, scaledY);
+        feedWatchDog();
+    }
+
     public Trajectory generateTrajectory() {
 
         var currentPos = new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0),
@@ -120,6 +149,11 @@ public class DriveSubsystem extends EntechSubsystem {
     return navX.getAngle();
     }
     
+    public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-navX.getAngle());
+    }
+
+
 
 
 }
