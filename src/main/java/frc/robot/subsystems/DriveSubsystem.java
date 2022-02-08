@@ -54,10 +54,10 @@ public class DriveSubsystem extends EntechSubsystem {
     @Override
     public void periodic() {
         feedWatchDog();
-        logger.log("Front Left Encoder Ticks", frontLeftEncoder.getPosition());
-        logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition());
-        logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition());
-        logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition());
+        logger.log("Front Left Encoder Ticks", frontLeftEncoder.getPosition() * -1);
+        logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition() * -1);
+        logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition() * -1);
+        logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition() * -1);
     }
 
     public void arcadeDrive(double forward, double rotation) {
