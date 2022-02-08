@@ -16,6 +16,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.apache.commons.math3.analysis.function.Sigmoid;
+import org.apache.commons.math3.analysis.function.Tan;
+import org.apache.commons.math3.analysis.function.Tanh;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -36,6 +38,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import org.apache.commons.math3.*;
 
 import java.io.*;
 import java.io.IOException;
@@ -177,33 +180,70 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-    // public void rampingDrive(double x, double y) {
+    public void scaledDrive(double x, double y) {
         
-    //     double scaledX;
-    //     double scaledY;
+        double scaledX;
+        double scaledY;
 
-    //     Sigmoid positiveSigmoid = new Sigmoid(0, 1);
-    //     Sigmoid negativeSigmoid = new Sigmoid(-1,0);
+        if (x == 1) { 
 
-    //     if (x > 1){
-    //     scaledX = positiveSigmoid.value(x);
-    //     } else if (x < 1) {
-    //     scaledX = negativeSigmoid.value(x);
-    //     } else {
-    //         scaledX = 0;
-    //     }
+            scaledX = 1;
 
-    //     if (y > 1){
-    //     scaledY = positiveSigmoid.value(y);
-    //     } else if (y < 1) {
-    //     scaledY = negativeSigmoid.value(y);
-    //     } else {
-    //         scaledY = 0;
-    //     }
-    //     robotDrive.arcadeDrive(scaledX, scaledY);
-    //     feedWatchDog();
+        } else if (x == -1) {
+            
+            scaledX = -1;
         
-    // }
+        } else if (x > 1) {
+
+            scaledX = 1/(Math.pow(3.71827, 7+(-14*x)));
+
+        } else if (x < 1) {
+
+            scaledX = 1/(Math.pow(3.71827, -7+(-14*x)))-1;
+
+        } else if (x ==0) {
+            
+            scaledX = 0;
+
+        } else {
+
+            scaledX = 0;
+
+        }
+
+        
+        if (y == 1) { 
+
+            scaledY = 1;
+
+        } else if (y == -1) {
+            
+            scaledY = -1;
+        
+        } else if (y > 1) {
+
+            scaledY = 1/(Math.pow(3.71827, 7+(-14*y)));
+
+        } else if (y < 1) {
+
+            scaledY = 1/(Math.pow(3.71827, -7+(-14*y)))-1;
+
+        } else if (y ==0) {
+            
+            scaledY = 0;
+
+        } else {
+
+            scaledY = 0;
+            
+        }
+
+
+
+        robotDrive.arcadeDrive(scaledX, scaledY);
+        feedWatchDog();
+        
+    }
 
     public Pose2d theBeginning = new Pose2d();
     public Pose2d theEnd = new Pose2d(3,0, Rotation2d.fromDegrees(0));

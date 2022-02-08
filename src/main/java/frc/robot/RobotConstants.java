@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.KeyDeserializer;
+
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /**
@@ -69,20 +71,21 @@ public final class RobotConstants {
         public static final double lAllowedErr = 1;
 
         //right side drivetrain
-        public static final double rkP = 1;
-        public static final double rkI = 1;
-        public static final double rkD = 1;
-        public static final double rkIz = 1;
-        public static final double rkFF = 1;
-        public static final double rkMaxOutput = 1;
-        public static final double rkMinOutput = 1;
-        public static final double rmaxRPM = 1;
-        public static final double rmaxVel = 1;
-        public static final double rminVel = 1;
-        public static final double rmaxAcc = 1;
-        public static final double rAllowedErr = 1;
+        public static final double rkP = lkP;
+        public static final double rkI = lkI;
+        public static final double rkD = lkD;
+        public static final double rkIz = lkIz;
+        public static final double rkFF = lkFF;
+        public static final double rkMaxOutput = lkMaxOutput;
+        public static final double rkMinOutput = lkMinOutput;
+        public static final double rmaxRPM = lmaxRPM;
+        public static final double rmaxVel = lmaxVel;
+        public static final double rminVel = lminVel;
+        public static final double rmaxAcc = lmaxAcc;
+        public static final double rAllowedErr = lAllowedErr;
 
         public static final double ramseteToleranceInches = 4;
-        public static final double ramseteToleranceDegrees = 45;
+        public static final double ramseteToleranceDegrees = 20;
+
     }
 }

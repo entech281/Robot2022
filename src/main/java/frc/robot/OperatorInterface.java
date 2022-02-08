@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.CommandFactory;
 import frc.robot.commands.DriveRamseteCommand;
+import frc.robot.commands.ScaledDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SubsystemManager;
 
@@ -35,9 +36,11 @@ public class OperatorInterface {
         //        .whenPressed(commandFactory.snapToYawCommand( 90.0))
         //        .add();
 
-        subsystemManager.getDriveSubsystem().setDefaultCommand (new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick));
+        subsystemManager.getDriveSubsystem().setDefaultCommand (new ScaledDriveCommand(subsystemManager.getDriveSubsystem(), driveStick));
+        
 
-        joystickManager.addButton(11).whenPressed( new DriveRamseteCommand(subsystemManager.getDriveSubsystem(), 
+
+        joystickManager.addButton(1).whenPressed( new DriveRamseteCommand(subsystemManager.getDriveSubsystem(), 
         TrajectoryGenerator.generateTrajectory(
         subsystemManager.getDriveSubsystem().theBeginning,
         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),

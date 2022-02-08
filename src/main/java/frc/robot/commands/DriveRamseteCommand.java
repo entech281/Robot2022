@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -26,6 +27,7 @@ public class DriveRamseteCommand extends EntechCommandBase{
     private double differenceX;
     private double differenceY;
     private double differenceTheta;
+    private final Timer timer = new Timer();
     boolean closeEnough;
 
 
@@ -41,6 +43,8 @@ public class DriveRamseteCommand extends EntechCommandBase{
    @Override
     public void initialize(){
         drive.getTrajectory();
+        timer.reset();
+        timer.start();
  
     }
     
@@ -50,11 +54,7 @@ public class DriveRamseteCommand extends EntechCommandBase{
         logger.log("Current Position", drive.getPose());
         logger.log("Target Position", drive.theEnd);
         drive.feedWatchDog();
-    }
-    
-    @Override
-    public boolean isFinished(){
-        
+
         difference = drive.theEnd.minus(drive.getPose());
         differenceX = difference.getX();
         differenceY = difference.getY();
@@ -66,8 +66,26 @@ public class DriveRamseteCommand extends EntechCommandBase{
         } else {
             closeEnough = false;
         }
+    }
+    
+    @Override
+    public boolean isFinished(){
+        
+        boolean timeElapsed;
+        boolean done;
+        
+        timeElapsed = timer.hasElapsed(trajectory.getTotalTimeSeconds());
 
-        return closeEnough;
+        
+        if (timeElapsed && !closeEnough) {
+            done = false;
+        } else if (closeEnough && !timeElapsed) {
+            done = true;
+        } else {
+            done = false;
+        }
+        return done;
+
     }
 
     
