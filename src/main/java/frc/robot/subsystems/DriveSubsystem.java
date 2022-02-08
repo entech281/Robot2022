@@ -65,7 +65,7 @@ public class DriveSubsystem extends EntechSubsystem {
     private  SparkMaxPIDController rightPID;
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(RobotConstants.DRIVETRAIN_CONSTANTS.ksVolts,RobotConstants.DRIVETRAIN_CONSTANTS.kvVoltSecondsPerMeter,RobotConstants.DRIVETRAIN_CONSTANTS.kaVoltSecondsSquaredPerMeter);
 
-    private AHRS navX;
+    private AHRS navX = new AHRS(SPI.Port.kMXP);
     
     Pose2d pose = new Pose2d();
     DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading(), pose);
@@ -132,6 +132,9 @@ public class DriveSubsystem extends EntechSubsystem {
         leftPID.setSmartMotionMaxAccel(RobotConstants.DRIVETRAIN_CONSTANTS.rmaxAcc, smartMotionSlotRight);
         leftPID.setSmartMotionAllowedClosedLoopError(RobotConstants.DRIVETRAIN_CONSTANTS.rAllowedErr, smartMotionSlotRight);
 
+        resetEncoders();
+        //resetGyro();
+
 
         trajectory = 
         TrajectoryGenerator.generateTrajectory(
@@ -141,8 +144,7 @@ public class DriveSubsystem extends EntechSubsystem {
         new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
         
          robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
-         navX = new AHRS(SPI.Port.kMXP);
-        
+
     }
 
     public void feedWatchDog(){
@@ -161,6 +163,9 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("acceleration y", navX.getRawAccelY());
         logger.log("displacement x", navX.getDisplacementX());
         logger.log("displacement y", navX.getDisplacementY());
+        logger.log("posex", getPose().getX());
+        logger.log("posey", getPose().getY());
+
 
         double leftPosition = frontLeftEncoder.getPosition();
         double rightPosition = frontRightEncoder.getPosition();
@@ -172,32 +177,33 @@ public class DriveSubsystem extends EntechSubsystem {
         feedWatchDog();
     }
 
-    public void rampingDrive(double x, double y) {
+    // public void rampingDrive(double x, double y) {
         
-        double scaledX;
-        double scaledY;
+    //     double scaledX;
+    //     double scaledY;
 
-        Sigmoid positiveSigmoid = new Sigmoid(0, 1);
-        Sigmoid negativeSigmoid = new Sigmoid(-1,0);
+    //     Sigmoid positiveSigmoid = new Sigmoid(0, 1);
+    //     Sigmoid negativeSigmoid = new Sigmoid(-1,0);
 
-        if (x > 1){
-        scaledX = positiveSigmoid.value(x);
-        } else if (x < 1) {
-        scaledX = negativeSigmoid.value(x);
-        } else {
-            scaledX = x;
-        }
+    //     if (x > 1){
+    //     scaledX = positiveSigmoid.value(x);
+    //     } else if (x < 1) {
+    //     scaledX = negativeSigmoid.value(x);
+    //     } else {
+    //         scaledX = 0;
+    //     }
 
-        if (y > 1){
-        scaledY = positiveSigmoid.value(y);
-        } else if (y < 1) {
-        scaledY = negativeSigmoid.value(y);
-        } else {
-            scaledY = y;
-        }
-        robotDrive.arcadeDrive(scaledX, scaledY);
-        feedWatchDog();
-    }
+    //     if (y > 1){
+    //     scaledY = positiveSigmoid.value(y);
+    //     } else if (y < 1) {
+    //     scaledY = negativeSigmoid.value(y);
+    //     } else {
+    //         scaledY = 0;
+    //     }
+    //     robotDrive.arcadeDrive(scaledX, scaledY);
+    //     feedWatchDog();
+        
+    // }
 
     public Pose2d theBeginning = new Pose2d();
     public Pose2d theEnd = new Pose2d(3,0, Rotation2d.fromDegrees(0));
@@ -223,8 +229,11 @@ public class DriveSubsystem extends EntechSubsystem {
         odometry.resetPosition(resetPose, getHeading());
       }
     
+
+      
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(-navX.getAngle());
+        
+        return new Rotation2d(-getAngle());
     }
 
     public Pose2d getPose() {

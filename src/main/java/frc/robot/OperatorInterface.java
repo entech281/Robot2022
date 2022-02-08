@@ -1,8 +1,17 @@
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.CommandFactory;
+import frc.robot.commands.DriveRamseteCommand;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.SubsystemManager;
 
 public class OperatorInterface {
@@ -27,6 +36,14 @@ public class OperatorInterface {
         //        .add();
 
         subsystemManager.getDriveSubsystem().setDefaultCommand (new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick));
+
+        joystickManager.addButton(11).whenPressed( new DriveRamseteCommand(subsystemManager.getDriveSubsystem(), 
+        TrajectoryGenerator.generateTrajectory(
+        subsystemManager.getDriveSubsystem().theBeginning,
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+        subsystemManager.getDriveSubsystem().theEnd,
+        new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0))))).add();
+        
     }
 
 }
