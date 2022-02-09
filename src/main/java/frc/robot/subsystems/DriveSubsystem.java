@@ -144,7 +144,7 @@ public class DriveSubsystem extends EntechSubsystem {
         theBeginning,
         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
         theEnd,
-        new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
+        new TrajectoryConfig(Units.feetToMeters(1.0), Units.feetToMeters(0.5)));
         
          robotDrive = new DifferentialDrive(frontLeftSpark, frontRightSpark);
 
@@ -182,8 +182,8 @@ public class DriveSubsystem extends EntechSubsystem {
 
     public void scaledDrive(double x, double y) {
         
-        double scaledX;
-        double scaledY;
+        double scaledX = 0;
+        double scaledY = 0;
 
         if (x == 1) { 
 
@@ -193,13 +193,13 @@ public class DriveSubsystem extends EntechSubsystem {
             
             scaledX = -1;
         
-        } else if (x > 1) {
+        } else if (x > 0) {
 
-            scaledX = 1/(Math.pow(3.71827, 7+(-14*x)));
+            scaledX = 1/(1 + Math.pow(2.71827, 7+(-14*x)));
 
-        } else if (x < 1) {
+        } else if (x < 0) {
 
-            scaledX = 1/(Math.pow(3.71827, -7+(-14*x)))-1;
+            scaledX = 1/(1 + Math.pow(2.71827, -7+(-14*x)))-1;
 
         } else if (x ==0) {
             
@@ -220,13 +220,13 @@ public class DriveSubsystem extends EntechSubsystem {
             
             scaledY = -1;
         
-        } else if (y > 1) {
+        } else if (y > 0) {
 
-            scaledY = 1/(Math.pow(3.71827, 7+(-14*y)));
+            scaledY = 1/(1 + Math.pow(2.71827, 7+(-14*y)));
 
-        } else if (y < 1) {
+        } else if (y < 0) {
 
-            scaledY = 1/(Math.pow(3.71827, -7+(-14*y)))-1;
+            scaledY = 1/(1 + Math.pow(2.71827, -7+(-14*y)))-1;
 
         } else if (y ==0) {
             
@@ -239,8 +239,7 @@ public class DriveSubsystem extends EntechSubsystem {
         }
 
 
-
-        robotDrive.arcadeDrive(scaledX, scaledY);
+        arcadeDrive(scaledX, scaledY);
         feedWatchDog();
         
     }

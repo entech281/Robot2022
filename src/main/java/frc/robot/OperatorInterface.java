@@ -36,7 +36,7 @@ public class OperatorInterface {
         //        .whenPressed(commandFactory.snapToYawCommand( 90.0))
         //        .add();
 
-        subsystemManager.getDriveSubsystem().setDefaultCommand (new ScaledDriveCommand(subsystemManager.getDriveSubsystem(), driveStick));
+        subsystemManager.getDriveSubsystem().setDefaultCommand (new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick));
         
 
 
