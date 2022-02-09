@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotConstants;
+import com.kauailabs.navx.frc.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
@@ -15,7 +16,6 @@ public class DriveSubsystem extends EntechSubsystem {
     private CANSparkMax frontRightSpark;
     private CANSparkMax rearLeftSpark;
     private CANSparkMax rearRightSpark;
-
     private RelativeEncoder frontLeftEncoder;
     private RelativeEncoder frontRightEncoder;
     private RelativeEncoder rearLeftEncoder;
@@ -24,7 +24,9 @@ public class DriveSubsystem extends EntechSubsystem {
     private MotorControllerGroup leftMotorController;
     private MotorControllerGroup rightMotorController;
     private DifferentialDrive robotDrive;
- 
+
+    private AHRS navX;
+
     @Override
     public void initialize() {
 
@@ -45,6 +47,8 @@ public class DriveSubsystem extends EntechSubsystem {
         frontRightEncoder = frontRightSpark.getEncoder();
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
+
+        navX = new AHRS(SPI.Port.kMXP);
     }
 
     public void feedWatchDog(){
@@ -58,11 +62,20 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition() * -1);
         logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition() * -1);
         logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition() * -1);
+        logger.log("navX angle", getAngle());
+        logger.log("navX acceleration x", navX.getRawAccelX());
+        logger.log("navX acceleration y", navX.getRawAccelY());
+        logger.log("navX displacement x", navX.getDisplacementX());
+        logger.log("navX displacement y", navX.getDisplacementY());
     }
 
     public void arcadeDrive(double forward, double rotation) {
         robotDrive.arcadeDrive(forward, rotation);
         feedWatchDog();
+    }
+
+    public double getAngle() {
+        return navX.getAngle();
     }
 
     public void resetEncoders(){
@@ -71,13 +84,10 @@ public class DriveSubsystem extends EntechSubsystem {
         rearRightEncoder.setPosition(0);
         rearLeftEncoder.setPosition(0);
     }
-
-public double getLeftDistance() {
-    return (0.5 * (frontLeftEncoder.getPosition() + rearLeftEncoder.getPosition()));
-}
-
-public double getRightDistance() {
+    public double getLeftDistance() {
+        return (0.5 * (frontLeftEncoder.getPosition() + rearLeftEncoder.getPosition()));
+    }
+    public double getRightDistance() {
         return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
-}
-
+    }
 }

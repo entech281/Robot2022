@@ -19,12 +19,12 @@ public class OperatorInterface {
         this.joystickManager = new JoystickButtonManager(driveStick);
 
         joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHT)
-                .whenPressed(commandFactory.getDriveStraigtCommand(48, 0.5))
+                .whenPressed(commandFactory.getDriveStraightCommand(48, 0.5))
                 .add();
 
-        // joystickManager.addButton(RobotConstants.DRIVER_STICK.TURN_RIGHT90)
-        //        .whenPressed(commandFactory.snapToYawCommand( 90.0))
-        //        .add();
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
+                .whenPressed(commandFactory.getDriveStraightGyroCommand(60, 0.5))
+                .add();
 
         subsystemManager.getDriveSubsystem().setDefaultCommand ( new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick) );
     }
