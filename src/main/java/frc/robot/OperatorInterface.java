@@ -25,6 +25,9 @@ public class OperatorInterface {
         joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
                 .whenPressed(commandFactory.getDriveStraightGyroCommand(60, 0.5))
                 .add();
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
+                .whenPressed(commandFactory.getTurnByAngleCommand(90))
+                .add();
 
         subsystemManager.getDriveSubsystem().setDefaultCommand ( new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick) );
     }
