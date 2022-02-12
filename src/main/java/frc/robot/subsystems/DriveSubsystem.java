@@ -16,7 +16,6 @@ public class DriveSubsystem extends EntechSubsystem {
     private CANSparkMax frontRightSpark;
     private CANSparkMax rearLeftSpark;
     private CANSparkMax rearRightSpark;
-
     private RelativeEncoder frontLeftEncoder;
     private RelativeEncoder frontRightEncoder;
     private RelativeEncoder rearLeftEncoder;
@@ -59,10 +58,10 @@ public class DriveSubsystem extends EntechSubsystem {
     @Override
     public void periodic() {
         feedWatchDog();
-        logger.log("Front Left Encoder Ticks", frontLeftEncoder.getPosition());
-        logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition());
-        logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition());
-        logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition());
+        logger.log("Front Left Encoder Ticks", frontLeftEncoder.getPosition() * -1);
+        logger.log("Front Right Encoder Ticks", frontRightEncoder.getPosition() * -1);
+        logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition() * -1);
+        logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition() * -1);
         logger.log("navX angle", getAngle());
         logger.log("navX acceleration x", navX.getRawAccelX());
         logger.log("navX acceleration y", navX.getRawAccelY());
@@ -85,11 +84,9 @@ public class DriveSubsystem extends EntechSubsystem {
         rearRightEncoder.setPosition(0);
         rearLeftEncoder.setPosition(0);
     }
-
     public double getLeftDistance() {
         return (0.5 * (frontLeftEncoder.getPosition() + rearLeftEncoder.getPosition()));
     }
-
     public double getRightDistance() {
         return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
     }

@@ -22,6 +22,7 @@ public final class RobotConstants {
     }
     public interface DRIVER_STICK {
         public static final int DRIVESTRAIGHT = 1;
+        public static final int DRIVESTRAIGHTGYRO = 2;
     }
     public interface CAN {
         public static final int FRONT_LEFT_MOTOR = 3;
