@@ -6,11 +6,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import frc.robot.subsystems.ColorSensorSubsystem;
 
 import frc.robot.RobotConstants;
 
 public class BeltSubsystem extends EntechSubsystem {
 private VictorSPX m_motor;
+private String sensorColor;
+private ColorSensorSubsystem color = new ColorSensorSubsystem();
 
   public enum BeltMode{
   stop, in, out, auto
@@ -29,6 +32,8 @@ private VictorSPX m_motor;
 
   @Override
   public void periodic(){
+    sensorColor = color.getSensorColor();
+
     if (currentMode == BeltMode.stop){
       m_motor.set(ControlMode.PercentOutput,0.0);
     } else if (currentMode == BeltMode.in){

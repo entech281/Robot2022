@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensorSubsystem extends EntechSubsystem{
     private ColorSensorV3  colorSensor; // = new ColorSensorV3(i2cPort);
-    private ColorMatch  colorMatcher; // = new ColorMatch();
     private final static String blue = "BLUE";
     private final static String red = "RED";
     private final static String none = "IDK bro";
