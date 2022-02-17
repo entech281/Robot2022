@@ -11,6 +11,7 @@ import frc.robot.subsystems.SubsystemManager;
 import frc.robot.commands.CommandFactory;
 import frc.robot.logger.DataLogger;
 import frc.robot.logger.DataLoggerFactory;
+import frc.robot.utils.VisionCommManager;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
   private OperatorInterface oi;
   private CommandFactory commandFactory;
   private Command autoCommand;
+  private VisionCommManager visionCommManager; 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -39,6 +41,9 @@ public class Robot extends TimedRobot {
 
     commandFactory = new CommandFactory(subsystemManager);
     oi = new OperatorInterface(subsystemManager,commandFactory);
+
+    visionCommManager = new VisionCommManager();
+    VisionCommManager.publishHSV();
   }
 
   /**
