@@ -21,6 +21,12 @@ public class CommandFactory {
     public Command getTurnByAngleCommand(double angle){
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
+    public Command getHookUpCommand(){
+        return new HookUpCommand(sm.getHookSubsystem());
+    }
+    public Command getHookDownCommand(){
+        return new HookDownCommand(sm.getHookSubsystem());
+    }
 
     public Command getAutonomousCommand(){
         return null;

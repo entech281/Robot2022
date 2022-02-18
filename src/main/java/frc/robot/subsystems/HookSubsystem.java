@@ -27,20 +27,38 @@ public class HookSubsystem extends EntechSubsystem {
   public void initialize() {
     // Create the internal objects here
     m_motor = new VictorSPX(RobotConstants.CAN.HOOK_MOTOR);
-    m_UpLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_UP_LIMIT)
-    m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT)
+    m_UpLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_UP_LIMIT);
+    m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT);
   }
 
   @Override
   public void periodic() {
+    if ((currentMode == HookMode.up) && (m_UpLimit.get() == true)) {
+      currentMode = HookMode.idle;
+    }
+    if ((currentMode == HookMode.down) && (m_DownLimit.get() == true)) {
+      currentMode = HookMode.idle;
+    }
     if (currentMode == HookMode.idle){
       m_motor.set(ControlMode.PercentOutput, 0.0);
     } else if (currentMode == HookMode.up) {
-      m_motor.set(ControlMode.PercentOutput, 1.0)
+      m_motor.set(ControlMode.PercentOutput, 1.0);
     } else if (currentMode == HookMode.down) {
-      m_motor.set(ControlMode.PercentOutput, -1.0)
+      m_motor.set(ControlMode.PercentOutput, -1.0);
     }
     // This method will be called once per scheduler run
+  }
+
+  public void up() {
+    currentMode = HookMode.up;
+  }
+
+  public void down() {
+    currentMode = HookMode.down;
+  }  
+
+  public void idle() {
+    currentMode = HookMode.idle;
   }
 
   @Override
