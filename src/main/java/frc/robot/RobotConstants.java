@@ -24,13 +24,18 @@ public final class RobotConstants {
         public static final int DRIVESTRAIGHT = 1;
         public static final int DRIVESTRAIGHTGYRO = 2;
         public static final int TURNBYANGLE = 3;
+        public static final int HOOKUP = 11;
+        public static final int HOOKDOWN= 12;
     }
     public interface CAN {
         public static final int FRONT_LEFT_MOTOR = 3;
         public static final int REAR_LEFT_MOTOR = 4;
         public static final int FRONT_RIGHT_MOTOR = 1;
         public static final int REAR_RIGHT_MOTOR = 2;
+        public static final int HOOK_MOTOR = 5;
     }
     public interface DIGITAL_IO {
+        public static final int HOOK_UP_LIMIT = 1;
+        public static final int HOOK_DOWN_LIMIT = 2;
     }
 }
