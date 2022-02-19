@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.RobotConstants;
@@ -26,6 +27,26 @@ public class IntakeSubsystem extends EntechSubsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void armsDown() {
+    // TODO: inpliment this
+  }
+
+  public void armsUp() {
+    // TODO: inpliment this
+  }
+
+  public void rollersIn() {
+    m_rollerMotor.set(ControlMode.PercentOutput, 1.0);
+  }
+
+  public void rollersOut() {
+    m_rollerMotor.set(ControlMode.PercentOutput, -1.0);
+  }
+
+  public void rollersStop() {
+    m_rollerMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
   @Override
