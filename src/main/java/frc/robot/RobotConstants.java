@@ -33,6 +33,8 @@ public final class RobotConstants {
         public static final int FRONT_RIGHT_MOTOR = 1;
         public static final int REAR_RIGHT_MOTOR = 2;
         public static final int HOOK_MOTOR = 5;
+        public static final int ARM_MOTOR = 6;
+        public static final int ROLLER_MOTOR = 7;
     }
     public interface DIGITAL_IO {
         public static final int HOOK_UP_LIMIT = 1;
