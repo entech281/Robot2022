@@ -24,6 +24,8 @@ public final class RobotConstants {
         public static final int DRIVESTRAIGHT = 1;
         public static final int DRIVESTRAIGHTGYRO = 2;
         public static final int TURNBYANGLE = 3;
+        public static final int BELTIN = 4;
+        public static final int BELTOUT = 5;
     }
     public interface CAN {
         public static final int FRONT_RIGHT_MOTOR = 1;

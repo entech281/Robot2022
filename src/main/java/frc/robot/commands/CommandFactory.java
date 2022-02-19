@@ -21,7 +21,15 @@ public class CommandFactory {
     public Command getTurnByAngleCommand(double angle){
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
-
+    public Command getbeltInCommand(){
+        return new beltInCommand(sm.getBeltSubsystem());
+    }
+    public Command getbeltOutCommand(){
+        return new beltInCommand(sm.getBeltSubsystem());
+    }
+    public Command getbeltStopCommand(){
+        return new beltInCommand(sm.getBeltSubsystem());
+    }
     public Command getAutonomousCommand(){
         return null;
     }

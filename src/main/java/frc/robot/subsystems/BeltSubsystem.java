@@ -5,15 +5,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.robot.subsystems.ColorSensorSubsystem;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.RobotConstants;
 
 public class BeltSubsystem extends EntechSubsystem {
-private VictorSPX m_motor;
-private String sensorColor;
-private ColorSensorSubsystem color = new ColorSensorSubsystem();
+private TalonSRX m_motor;
 
   public enum BeltMode{
   stop, in, out, auto
@@ -26,14 +23,13 @@ private ColorSensorSubsystem color = new ColorSensorSubsystem();
   // Entech does all the creation work in the initialize method
   @Override
   public void initialize(){
-    m_motor = new VictorSPX(RobotConstants.CAN.BELT_MOTOR);
+    m_motor = new TalonSRX(RobotConstants.CAN.BELT_MOTOR);
+    currentMode = BeltMode.stop;
     // Create the internal objects here
   }
 
   @Override
   public void periodic(){
-    sensorColor = color.getSensorColor();
-
     if (currentMode == BeltMode.stop){
       m_motor.set(ControlMode.PercentOutput,0.0);
     } else if (currentMode == BeltMode.in){
@@ -41,11 +37,20 @@ private ColorSensorSubsystem color = new ColorSensorSubsystem();
     } else if (currentMode == BeltMode.out){
       m_motor.set(ControlMode.PercentOutput, -1.0);
     }
-    // This method will be called once per scheduler run
+  }
+  
+  public void intake(){
+    currentMode = BeltMode.in;
+  }
+  public void out(){
+    currentMode = BeltMode.out;
+  }
+  public void stop(){
+    currentMode = BeltMode.stop;
   }
 
   @Override
   public void simulationPeriodic(){
-    // This method will be called once per scheduler run during simulation
+
   }
 }

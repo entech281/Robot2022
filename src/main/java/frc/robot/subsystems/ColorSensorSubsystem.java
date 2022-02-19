@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
+import com.ctre.phoenix.Logger;
 import com.revrobotics.CIEColor;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
@@ -15,7 +16,9 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     private final static double colorConfidence = .4;
 
     private Color detectedColor;
+    public ColorSensorSubsystem() {
 
+    }
 
     @Override
     public void initialize() {
@@ -23,9 +26,9 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     }
 
     @Override
-    public void periodic() {
+    public void periodic(){
         String c = getSensorColor();
-
+    
         logger.log("red value", detectedColor.red);
         logger.log("green value", detectedColor.green);
         logger.log("blue value", detectedColor.blue);
@@ -36,13 +39,12 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     public String getSensorColor() {
         String ballColor;
 
-        detectedColor = colorSensor.getColor();
         double r = colorSensor.getRed();
         double b = colorSensor.getBlue();
         double p = colorSensor.getBlue();
 
         if (p > 420) {
-            if ( b > r) {
+            if ( b > r){ 
                 ballColor = blue;
             } else if (r > b){
                 ballColor = red;
@@ -54,5 +56,6 @@ public class ColorSensorSubsystem extends EntechSubsystem{
         }
 
         return ballColor;
-    }
+
+        }
 }

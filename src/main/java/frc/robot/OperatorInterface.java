@@ -28,7 +28,14 @@ public class OperatorInterface {
         joystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
                 .whenPressed(commandFactory.getTurnByAngleCommand(90))
                 .add();
-
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
+                .whenPressed(commandFactory.getbeltInCommand())
+                .whenReleased(commandFactory.getbeltStopCommand())
+                .add();
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
+                .whenPressed(commandFactory.getbeltOutCommand())
+                .whenReleased(commandFactory.getbeltStopCommand())
+                .add();        
         subsystemManager.getDriveSubsystem().setDefaultCommand ( new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick) );
     }
 
