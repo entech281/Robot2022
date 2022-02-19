@@ -8,6 +8,7 @@ public class SubsystemManager {
     private DriveSubsystem driveSubsystem;
     private ColorSensorSubsystem colorSensorSubsystem;
     private HookSubsystem hookSubsystem;
+    private IntakeSubsystem intakeSubsystem;
 
     public SubsystemManager() {
     }
@@ -24,13 +25,19 @@ public class SubsystemManager {
         return hookSubsystem;
     }
 
+    public IntakeSubsystem getIntakeSubsystem() {
+        return intakeSubsystem;
+    }
+
     public void initAll() {
         driveSubsystem = new DriveSubsystem();
         colorSensorSubsystem = new ColorSensorSubsystem();
         hookSubsystem = new HookSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
 
         driveSubsystem.initialize();
         colorSensorSubsystem.initialize();
         hookSubsystem.initialize();
+        intakeSubsystem.initialize();
     }
 }

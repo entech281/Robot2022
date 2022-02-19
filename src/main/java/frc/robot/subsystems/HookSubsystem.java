@@ -5,13 +5,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.RobotConstants;
 
 public class HookSubsystem extends EntechSubsystem {
-  private VictorSPX m_motor;
+  private TalonSRX m_motor;
   private DigitalInput m_UpLimit;
   private DigitalInput m_DownLimit;
     public enum HookMode{
@@ -26,7 +26,7 @@ public class HookSubsystem extends EntechSubsystem {
   @Override
   public void initialize() {
     // Create the internal objects here
-    m_motor = new VictorSPX(RobotConstants.CAN.HOOK_MOTOR);
+    m_motor = new TalonSRX(RobotConstants.CAN.HOOK_MOTOR);
     m_UpLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_UP_LIMIT);
     m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT);
   }
