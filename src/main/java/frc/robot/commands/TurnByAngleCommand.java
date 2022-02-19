@@ -28,7 +28,6 @@ public class TurnByAngleCommand extends EntechCommandBase {
 
     public void execute(){
         double currentAngle = m_drive.getAngle();
-        //double adjustment = 0.025 * ( m_initalAngle - currentAngle);
         double adjustment = m_PID.calculate( m_finalAngle - currentAngle);
         m_drive.arcadeDrive( 0, adjustment);
     }

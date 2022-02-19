@@ -6,9 +6,10 @@ package frc.robot.subsystems;
 
 public class SubsystemManager {
     private DriveSubsystem driveSubsystem;
+    private IntakeSubsystem intakeSubsystem;
+    private BeltSubsystem beltSubsystem;
     private ColorSensorSubsystem colorSensorSubsystem;
     private HookSubsystem hookSubsystem;
-    private IntakeSubsystem intakeSubsystem;
 
     public SubsystemManager() {
     }
@@ -28,16 +29,22 @@ public class SubsystemManager {
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
+    public BeltSubsystem getBeltSubsystem(){
+        return beltSubsystem;
+    }
+
 
     public void initAll() {
         driveSubsystem = new DriveSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
+        beltSubsystem = new BeltSubsystem();
         colorSensorSubsystem = new ColorSensorSubsystem();
         hookSubsystem = new HookSubsystem();
-        intakeSubsystem = new IntakeSubsystem();
 
         driveSubsystem.initialize();
+        intakeSubsystem.initialize();
+        beltSubsystem.initialize();
         colorSensorSubsystem.initialize();
         hookSubsystem.initialize();
-        intakeSubsystem.initialize();
     }
 }
