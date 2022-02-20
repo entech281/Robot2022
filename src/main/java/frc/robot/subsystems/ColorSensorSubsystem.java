@@ -1,39 +1,31 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorMatch;
-import com.ctre.phoenix.Logger;
-import com.revrobotics.CIEColor;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensorSubsystem extends EntechSubsystem{
-    private ColorSensorV3  colorSensor; // = new ColorSensorV3(i2cPort);
+    private ColorSensorV3  colorSensor;
     private final static String blue = "BLUE";
     private final static String red = "RED";
     private final static String none = "IDK bro";
-    private final static double colorConfidence = .4;
-
-    private Color detectedColor;
-    public ColorSensorSubsystem() {
-
-    }
+    private final static int proximityThreshold = 420;
 
     @Override
     public void initialize() {
-        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        colorSensor = new ColorSensorV3(I2C.Port.kMXP);
     }
 
     @Override
-    public void periodic(){
-        String c = getSensorColor();
-    
-        // logger.log("red value", detectedColor.red);
-        // logger.log("green value", detectedColor.green);
-        // logger.log("blue value", detectedColor.blue);
-        // logger.log("proximity", colorSensor.getProximity());
-        logger.log("getSensorColor", c);
+    public void periodic() {
+        Color detectedColor = colorSensor.getColor();
+
+        logger.log("red value",   detectedColor.red);
+        logger.log("green value", detectedColor.green);
+        logger.log("blue value",  detectedColor.blue);
+        logger.log("proximity",   colorSensor.getProximity());
+        logger.log("ball Red",    isBallRed());
+        logger.log("ball Blue",   isBallBlue());
     }
 
     public String getSensorColor() {
@@ -41,10 +33,9 @@ public class ColorSensorSubsystem extends EntechSubsystem{
 
         double r = colorSensor.getRed();
         double b = colorSensor.getBlue();
-        double p = colorSensor.getBlue();
 
-        if (p > 420) {
-            if ( b > r){ 
+        if (isBallPresent()) {
+            if ( b > r) {
                 ballColor = blue;
             } else if (r > b){
                 ballColor = red;
@@ -56,6 +47,17 @@ public class ColorSensorSubsystem extends EntechSubsystem{
         }
 
         return ballColor;
+    }
 
-        }
+    public boolean isBallPresent() {
+        return (colorSensor.getProximity() > proximityThreshold);
+    }
+
+    public boolean isBallRed() {
+        return (colorSensor.getRed() > colorSensor.getBlue());
+    }
+
+    public boolean isBallBlue() {
+        return (colorSensor.getBlue() > colorSensor.getRed());
+    }
 }
