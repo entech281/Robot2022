@@ -13,7 +13,7 @@ public class ColorSensorSubsystem extends EntechSubsystem{
 
     @Override
     public void initialize() {
-        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        colorSensor = new ColorSensorV3(I2C.Port.kMXP);
     }
 
     @Override
