@@ -24,8 +24,9 @@ public class ColorSensorSubsystem extends EntechSubsystem{
         logger.log("green value", detectedColor.green);
         logger.log("blue value",  detectedColor.blue);
         logger.log("proximity",   colorSensor.getProximity());
-        logger.log("ball Red",    isBallRed());
-        logger.log("ball Blue",   isBallBlue());
+        logger.log("ball isPresent", isBallPresent());
+        logger.log("ball isRed",    isBallRed());
+        logger.log("ball isBlue",   isBallBlue());
     }
 
     public String getSensorColor() {
