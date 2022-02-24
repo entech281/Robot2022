@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
 /**
  *
@@ -40,6 +42,16 @@ public class CommandFactory {
     }
 
     public Command getAutonomousCommand(){
-        return null;
+        return getAutonomousCommand1();
+    }
+    public Command getAutonomousCommand1(){
+        return new SequentialCommandGroup(
+            getDriveStraightGyroCommand(48, 0.5),
+            getTurnByAngleCommand(180),
+            getDriveStraightGyroCommand(48, 0.5),
+            getbeltInCommand(),//.withTimeout(10),
+            new WaitCommand(5),
+            getDriveStraightGyroCommand(36, 0.5)
+        );
     }
 }

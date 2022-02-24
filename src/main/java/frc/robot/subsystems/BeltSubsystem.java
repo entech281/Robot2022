@@ -25,7 +25,7 @@ private TalonSRX m_motor;
   public void initialize(){
     m_motor = new TalonSRX(RobotConstants.CAN.BELT_MOTOR);
     currentMode = BeltMode.stop;
-    // Create the internal objects here
+    // Create the internal objects here 
   }
 
   @Override
