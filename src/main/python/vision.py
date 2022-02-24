@@ -29,6 +29,7 @@ lower_bound = vision_nt.getNumberArray("HSVValuesLowerBound")
 upper_bound = vision_nt.getNumberArray("HSVValuesUpperBound")
 #hsv_img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
 #binary_img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
+frame_counter = 0
 while True:
     time, input_img = sink.grabFrame(img)
     output_img = np.copy(input_img)
@@ -37,6 +38,8 @@ while True:
         outputSource.notifyError(sink.getError())
         continue
 
+    frame_counter += 1
+    target_found = False
     hsv_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2HSV)
     
     binary_img = cv2.inRange(hsv_img, lower_bound, upper_bound)
@@ -52,7 +55,6 @@ while True:
     for contour in contours:
 
         if cv2.contourArea(contour) < 15:
-            
             continue
         
         cv2.drawContours(binary_img, contour, -1, color = (255, 255, 255), thickness = -1)
@@ -60,7 +62,11 @@ while True:
         center, size = ball
         int(x), int(y) = center
         x_rel = 160 - x
-
+        target_found = True
 
         count = len(contours)
+    nt.putNumber('counter',frame_counter)
+    nt.putBoolean('target_found', target_found)
+    nt.putNumber('x',x_rel)
+    nt.putNumber('y',y)
     outputSource.putFrame(binary_img) 
