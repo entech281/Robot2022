@@ -10,6 +10,7 @@ public class SubsystemManager {
     private BeltSubsystem beltSubsystem;
     private ColorSensorSubsystem colorSensorSubsystem;
     private HookSubsystem hookSubsystem;
+    private VisionSubsystem visionSubsystem;
 
     public SubsystemManager() {
     }
@@ -29,8 +30,13 @@ public class SubsystemManager {
     public IntakeSubsystem getIntakeSubsystem() {
         return intakeSubsystem;
     }
+    
     public BeltSubsystem getBeltSubsystem(){
         return beltSubsystem;
+    }
+
+    public VisionSubsystem getVisionSubsytem(){
+        return visionSubsystem;
     }
 
 
@@ -40,11 +46,13 @@ public class SubsystemManager {
         beltSubsystem = new BeltSubsystem();
         colorSensorSubsystem = new ColorSensorSubsystem();
         hookSubsystem = new HookSubsystem();
+        visionSubsystem = new VisionSubsystem();
 
         driveSubsystem.initialize();
         intakeSubsystem.initialize();
         beltSubsystem.initialize();
         colorSensorSubsystem.initialize();
         hookSubsystem.initialize();
+        visionSubsystem.initialize();
     }
 }

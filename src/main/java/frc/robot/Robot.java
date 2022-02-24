@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
   private OperatorInterface oi;
   private CommandFactory commandFactory;
   private Command autoCommand;
+ 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 
     commandFactory = new CommandFactory(subsystemManager);
     oi = new OperatorInterface(subsystemManager,commandFactory);
+
   }
 
   /**
