@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.util.Color;
 public class SubsystemManager {
     private DriveSubsystem driveSubsystem;
     private ColorSensorSubsystem colorSensorSubsystem;
+    private VisionSubsystem visionSubsystem;
 
     public SubsystemManager() {
     }
@@ -21,12 +22,18 @@ public class SubsystemManager {
         return colorSensorSubsystem;
     }
 
+    public VisionSubsystem getVisionSubsytem(){
+        return visionSubsystem;
+    }
+
 
     public void initAll() {
         driveSubsystem = new DriveSubsystem();
         colorSensorSubsystem = new ColorSensorSubsystem();
+        visionSubsystem = new VisionSubsystem();
 
         driveSubsystem.initialize();
         colorSensorSubsystem.initialize();
+        visionSubsystem.initialize();
     }
 }
