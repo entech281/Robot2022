@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.BeltSubsystem;
-import frc.robot.subsystems.EntechSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class beltStopCommand extends EntechCommandBase{
