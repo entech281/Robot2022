@@ -6,11 +6,14 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveStraightCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
     private final double m_speed;
+    private final double m_inches;
     private PIDController m_PID;
 
     public DriveStraightCommand(DriveSubsystem drive, double inches, double speed){
         super(drive);
-        m_speed = speed;
+        m_inches = Math.abs(inches);
+        m_speed = speed * -1
+        ;
         m_drive = drive;
         m_PID = new PIDController(0.025,0 ,0 );
     }
@@ -27,11 +30,11 @@ public class DriveStraightCommand extends EntechCommandBase {
         double rightEncoder = m_drive.getRightDistance();
         double adjustment = m_PID.calculate(rightEncoder - leftEncoder);
         m_drive.arcadeDrive(m_speed, adjustment);
-
     }
 
     public boolean isFinished(){
-        if (m_PID.atSetpoint()){
+        double EDistance = Math.abs((m_drive.getLeftDistance() + m_drive.getRightDistance()) / 2);
+        if (EDistance > m_inches){
             return true;
         }
         return false;

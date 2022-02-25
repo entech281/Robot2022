@@ -29,11 +29,11 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     public void periodic(){
         String c = getSensorColor();
     
-        logger.log("red value", detectedColor.red);
-        logger.log("green value", detectedColor.green);
-        logger.log("blue value", detectedColor.blue);
-        logger.log("proximity", colorSensor.getProximity());
-        logger.log("getSensorColor", c);
+        // logger.log("red value", detectedColor.red);
+        // logger.log("green value", detectedColor.green);
+        // logger.log("blue value", detectedColor.blue);
+        // logger.log("proximity", colorSensor.getProximity());
+        // logger.log("getSensorColor", c);
     }
 
     public String getSensorColor() {
