@@ -1,7 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.BetterArcadeDriveCommand;
 import frc.robot.commands.CommandFactory;
 import frc.robot.subsystems.SubsystemManager;
 
@@ -9,11 +9,11 @@ public class OperatorInterface {
 
     private Joystick driveStick;
     private JoystickButtonManager joystickManager;
-    private SubsystemManager subsystemManager;
+    private SubsystemManager sm;
     private CommandFactory commandFactory;
 
     public OperatorInterface(final SubsystemManager subMan, final CommandFactory cf) {
-        this.subsystemManager = subMan;
+        this.sm = subMan;
         this.commandFactory = cf;
         this.driveStick = new Joystick(RobotConstants.JOYSTICKS.DRIVER_JOYSTICK);
         this.joystickManager = new JoystickButtonManager(driveStick);
@@ -44,15 +44,12 @@ public class OperatorInterface {
                 .add();
         joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
-                .add();        
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.VISIONDRIVE)
-                .whenPressed(commandFactory.getVisionDriveCommand())
-                .add();
+                .add();                
         joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
                 .whenPressed(commandFactory.getDriveStraightVisionCommand())
                 .add();
 
-        subsystemManager.getDriveSubsystem().setDefaultCommand ( new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick) );
+        sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveStick) );
     }
 
 }
