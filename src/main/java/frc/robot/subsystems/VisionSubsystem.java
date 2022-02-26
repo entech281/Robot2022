@@ -4,13 +4,12 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation; 
-//import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class VisionSubsystem extends EntechSubsystem {
     
-    private static NetworkTable table = NetworkTableInstance.getDefault().getTable("Vision");
-    public static NetworkTableEntry tableEntryLowerBound = table.getEntry("HSVValuesLowerBound");
-    public static NetworkTableEntry tableEntryUpperBound = table.getEntry("HSVValuesUpperBound");
+    private NetworkTable table;
+    private static NetworkTableEntry tableEntryLowerBound;
+    private static NetworkTableEntry tableEntryUpperBound;
     private int counter;
     private int x_pos;
     private int y_pos;
@@ -22,6 +21,9 @@ public class VisionSubsystem extends EntechSubsystem {
 
     @Override
     public void initialize(){
+        table = NetworkTableInstance.getDefault().getTable("Vision");
+        tableEntryLowerBound = table.getEntry("HSVValuesLowerBound");
+        tableEntryUpperBound = table.getEntry("HSVValuesUpperBound");
     }
 
     public static void publishHSV() {
@@ -51,8 +53,8 @@ public class VisionSubsystem extends EntechSubsystem {
 
     @Override
     public void periodic(){
-        publishHSV();
 
+        publishHSV();
         counter = table.getEntry("Counter").getNumber(0.0).intValue();
         x_pos = table.getEntry("x").getNumber(0).intValue();
         y_pos = table.getEntry("y").getNumber(0).intValue();

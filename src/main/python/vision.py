@@ -6,6 +6,10 @@ import numpy as np
 import time
 import math
 
+print("waiting 30 seconds")
+time.sleep(30)
+print("wait complete")
+
 ntinst = NetworkTablesInstance.getDefault()
 ntinst.startClientTeam(281)
 ntinst.startDSClient()
@@ -27,8 +31,7 @@ outputSource = cs.putVideo("Feed", 320, 240)
 img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
 lower_bound = vision_nt.getNumberArray("HSVValuesLowerBound", (0,0,0))
 upper_bound = vision_nt.getNumberArray("HSVValuesUpperBound", (0,0,0))
-#hsv_img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
-#binary_img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
+
 counter = 0
 while True:
     counter += 1
@@ -37,44 +40,56 @@ while True:
     isBallFound = False
     time, input_img = sink.grabFrame(img)
     output_img = np.copy(input_img)
-    
-    if time == 0: # There is an error	
+
+    lower_bound = vision_nt.getNumberArray("HSVValuesLowerBound", (0,0,0))
+    upper_bound = vision_nt.getNumberArray("HSVValuesUpperBound", (0,0,0))
+    if lower_bound[0] == 0:
+        continue
+
+    if time == 0: # There is an error
         outputSource.notifyError(sink.getError())
         continue
 
-    hsv_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2HSV)
-    
+    blurred = cv2.GaussianBlur(input_img, (11,11), 0)
+    hsv_img = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+
     binary_img = cv2.inRange(hsv_img, lower_bound, upper_bound)
+    binary_img = cv2.erode(binary_img, None, iterations=2)
+    binary_img = cv2.dilate(binary_img, None, iterations=2)
+
     kernel = np.ones((3,3), np.uint8)
     binary_img = cv2.morphologyEx(binary_img, cv2.MORPH_OPEN, kernel)
-    #input_img = cv2.rectangle(binary_img, (0, 0), (100, 100), (255, 0, 0), 2)
     _, contours, _ = cv2.findContours(binary_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
     # Mandrews
-    #  - done use contours to find ball center, 
-    #  - done find relative position of ball center to camera center (based on resolution above)
-    #  - done put counter, ball found flag, relative positions into the Vision network table
-    #  - draw a cross on the ball found on the imput image and send that to the drive station (can be done later_)
-    for contour in contours:
+    #  - draw a cross on the ball found on the imput image and send that to the drive station (can be done later)
 
+    indx = -1
+    indx_ratio = 100.0
+    for i in range(len(contours)):
+        contour = contours[i]
         if cv2.contourArea(contour) < 15:
-            vision_nt.putNumber("Counter", counter)
-            vision_nt.putBoolean("isBallFound", isBallFound)
             continue
+        x,y,w,h = cv2.boundingRect(contour)
+        if (w>2) and (h>2):
+            ratio = float(max(w,h))/float(min(w,h))
+            if ratio < indx_ratio:
+                indx = i
 
+    if indx > -1:
+        contour = contours[indx]
         isBallFound = True
         cv2.drawContours(binary_img, contour, -1, color = (255, 255, 255), thickness = -1)
         ball = cv2.minEnclosingCircle(contour)
         center, size = ball
         x, y = center
+        cv2.circle(output_img, (int(x), int(y)), int(size), (255,255,255), 2)
         x_rel = 160 - x #Positive -> left hand side
         y_rel = 120 - y #Positive -> top half of the screen
 
-
-        count = len(contours)
     vision_nt.putNumber("Counter", counter)
     vision_nt.putBoolean("isBallFound", isBallFound)
     vision_nt.putNumber("x", x_rel)
     vision_nt.putNumber("y", y_rel)
-    outputSource.putFrame(binary_img) 
-
-    
+    vision_nt.putNumber("color hue avg",(lower_bound[0]+upper_bound[0])/2)
+    outputSource.putFrame(output_img)
