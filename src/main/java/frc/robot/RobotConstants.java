@@ -22,10 +22,12 @@ public final class RobotConstants {
     }
     public interface DRIVER_STICK {
         public static final int DRIVESTRAIGHT = 1;
-        public static final int DRIVESTRAIGHTGYRO = 2;
+        public static final int VISIONDRIVE = 2;
         public static final int TURNBYANGLE = 3;
         public static final int BELTIN = 4;
         public static final int BELTOUT = 5;
+        public static final int DRIVESTRAIGHTGYRO = 6;
+        public static final int DRIVESTRAIGHTVISION = 7;
         public static final int HOOKUP = 11;
         public static final int HOOKDOWN= 12;
     }

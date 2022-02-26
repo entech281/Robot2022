@@ -4,6 +4,7 @@ import frc.robot.RobotConstants;
 import com.kauailabs.navx.frc.*;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -89,5 +90,17 @@ public class DriveSubsystem extends EntechSubsystem {
     }
     public double getRightDistance() {
         return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
+    }
+    public void setBrake() {
+        frontLeftSpark.setIdleMode(IdleMode.kBrake);
+        frontRightSpark.setIdleMode(IdleMode.kBrake);
+        rearLeftSpark.setIdleMode(IdleMode.kBrake);
+        rearRightSpark.setIdleMode(IdleMode.kBrake);
+    }
+    public void setCoast() {
+        frontLeftSpark.setIdleMode(IdleMode.kCoast);
+        frontRightSpark.setIdleMode(IdleMode.kCoast);
+        rearLeftSpark.setIdleMode(IdleMode.kCoast);
+        rearRightSpark.setIdleMode(IdleMode.kCoast);
     }
 }

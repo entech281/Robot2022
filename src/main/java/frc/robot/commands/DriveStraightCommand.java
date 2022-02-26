@@ -14,14 +14,15 @@ public class DriveStraightCommand extends EntechCommandBase {
         m_inches = Math.abs(inches);
         m_speed = -speed;
         m_drive = drive;
-        m_PID = new PIDController(0.025, 0, 0);
+        m_PID = new PIDController(0.025,0 ,0 );
     }
 
     public void initialize(){
-        m_drive.arcadeDrive(0, 0);
-        m_drive.resetEncoders();
-        m_PID.setSetpoint(0);
-        m_PID.setTolerance(5);
+    m_drive.arcadeDrive(0, 0);
+    m_drive.resetEncoders();
+    m_drive.setBrake();
+    m_PID.setSetpoint(0);
+    m_PID.setTolerance(5);
     }
 
     public void execute(){
@@ -37,5 +38,9 @@ public class DriveStraightCommand extends EntechCommandBase {
             return true;
         }
         return false;
+    }
+    public void end(boolean interrupted){
+        m_drive.arcadeDrive(0, 0);
+        m_drive.setCoast();
     }
 }

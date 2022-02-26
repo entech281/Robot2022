@@ -22,13 +22,20 @@ public class TurnByAngleCommand extends EntechCommandBase {
         m_finalAngle = m_initalAngle + angle;
         m_drive.arcadeDrive(0, 0);
         m_drive.resetEncoders();
+        m_drive.setBrake();
         m_PID.setSetpoint(0);
-        m_PID.setTolerance(5);  // IN DEGREES
+        m_PID.setTolerance(3);  // IN DEGREES
     }
 
     public void execute(){
         double currentAngle = m_drive.getAngle();
         double adjustment = m_PID.calculate( m_finalAngle - currentAngle);
+        if ((adjustment > 0) && (adjustment < 0.2)) {
+            adjustment = 0.2;
+        }
+        if ((adjustment < 0) && (adjustment > -0.2)) {
+            adjustment = -0.2;
+        }
         m_drive.arcadeDrive( 0, adjustment);
     }
 
@@ -40,5 +47,6 @@ public class TurnByAngleCommand extends EntechCommandBase {
     }
     public void end(boolean interrupted){
         m_drive.arcadeDrive(0, 0);
+        m_drive.setCoast();
     }
 }

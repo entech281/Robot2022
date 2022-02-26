@@ -39,13 +39,18 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getbeltOutCommand())
                 .whenReleased(commandFactory.getbeltStopCommand())
                 .add();        
-
         joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())
                 .add();
         joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
                 .add();        
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.VISIONDRIVE)
+                .whenPressed(commandFactory.getVisionDriveCommand())
+                .add();
+        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
+                .whenPressed(commandFactory.getDriveStraightVisionCommand())
+                .add();
 
         subsystemManager.getDriveSubsystem().setDefaultCommand ( new ArcadeDriveCommand(subsystemManager.getDriveSubsystem(), driveStick) );
     }
