@@ -22,7 +22,6 @@ public class VisionSubsystem extends EntechSubsystem {
 
     @Override
     public void initialize(){
-        publishHSV();
     }
 
     public static void publishHSV() {
@@ -35,8 +34,8 @@ public class VisionSubsystem extends EntechSubsystem {
 
         }
         if (DriverStation.getAlliance() == DriverStation.Alliance.Blue){
-            Number[] arrLowerBound = {50, 100, 0};
-            Number[] arrUpperBound = {65, 255, 255};
+            Number[] arrLowerBound = {100, 100, 0};
+            Number[] arrUpperBound = {120, 255, 255};
             tableEntryLowerBound.forceSetNumberArray(arrLowerBound);  
             tableEntryUpperBound.forceSetNumberArray(arrUpperBound);
         }
@@ -53,17 +52,16 @@ public class VisionSubsystem extends EntechSubsystem {
     @Override
     public void periodic(){
 
+        publishHSV();
         counter = table.getEntry("Counter").getNumber(0.0).intValue();
-        logger.log("Counter", counter);
         x_pos = table.getEntry("x").getNumber(0).intValue();
-        logger.log("Ball Lateral Offset", x_pos);
         y_pos = table.getEntry("y").getNumber(0).intValue();
-        logger.log("Ball Vertical Offset", y_pos);
         isBallFound = table.getEntry("isBallFound").getBoolean(false);
-        logger.log("Vision Ball Found?", isBallFound);
 
-        
-        
+        logger.log("Counter", counter);
+        logger.log("Ball Lateral Offset", x_pos);
+        logger.log("Ball Vertical Offset", y_pos);
+        logger.log("Vision Ball Found?", isBallFound);
     }
 
     public Boolean isBallFound() {
