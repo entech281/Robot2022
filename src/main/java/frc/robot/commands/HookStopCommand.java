@@ -4,19 +4,19 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.BeltSubsystem;
+import frc.robot.subsystems.HookSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class BeltInCommand extends EntechCommandBase {
-  
-  private final BeltSubsystem m_subsystem;
+public class HookStopCommand extends EntechCommandBase {
+    
+  private final HookSubsystem m_subsystem;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public BeltInCommand(BeltSubsystem subsystem) {
+  public HookStopCommand(HookSubsystem subsystem) {
       super(subsystem);
       m_subsystem = subsystem;
   }
@@ -24,14 +24,15 @@ public class BeltInCommand extends EntechCommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     m_subsystem.intake(); 
+      m_subsystem.idle();
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
