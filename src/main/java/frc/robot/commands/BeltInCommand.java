@@ -8,7 +8,7 @@ import frc.robot.subsystems.BeltSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class BeltInCommand extends EntechCommandBase {
-  
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final BeltSubsystem m_subsystem;
 
   /**
