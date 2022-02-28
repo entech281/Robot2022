@@ -5,12 +5,12 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 
-public class visionDriveCommand extends EntechCommandBase {
+public class VisionDriveCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
     private final VisionSubsystem m_vision;
     private PIDController m_PID;
 
-    public visionDriveCommand(DriveSubsystem drive, VisionSubsystem vision){
+    public VisionDriveCommand(DriveSubsystem drive, VisionSubsystem vision){
         super(drive, vision);
         m_vision = vision;
         m_drive = drive;

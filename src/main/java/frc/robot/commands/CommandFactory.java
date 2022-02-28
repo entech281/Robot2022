@@ -24,14 +24,14 @@ public class CommandFactory {
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
 
-    public Command getbeltInCommand(){
-        return new beltInCommand(sm.getBeltSubsystem());
+    public Command getBeltInCommand(){
+        return new BeltInCommand(sm.getBeltSubsystem());
     }
-    public Command getbeltOutCommand(){
-        return new beltInCommand(sm.getBeltSubsystem());
+    public Command getBeltOutCommand(){
+        return new BeltInCommand(sm.getBeltSubsystem());
     }
-    public Command getbeltStopCommand(){
-        return new beltInCommand(sm.getBeltSubsystem());
+    public Command getBeltStopCommand(){
+        return new BeltInCommand(sm.getBeltSubsystem());
     }
 
     public Command getHookUpCommand(){
@@ -41,7 +41,7 @@ public class CommandFactory {
         return new HookDownCommand(sm.getHookSubsystem());
     }
     public Command getVisionDriveCommand(){
-        return new visionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
+        return new VisionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
     }
     public Command getDriveStraightVisionCommand(){
         return new DriveStraightVisionCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), 24, 0.5);
@@ -54,7 +54,7 @@ public class CommandFactory {
             getDriveStraightGyroCommand(48, 0.5),
             getTurnByAngleCommand(180),
             getDriveStraightGyroCommand(48, 0.5),
-            getbeltInCommand(),//.withTimeout(10),
+            getBeltInCommand(),//.withTimeout(10),
             new WaitCommand(5),
             getDriveStraightGyroCommand(36, 0.5)
         );

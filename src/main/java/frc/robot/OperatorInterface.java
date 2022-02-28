@@ -32,12 +32,12 @@ public class OperatorInterface {
 
 
         joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
-                .whenPressed(commandFactory.getbeltInCommand())
-                .whenReleased(commandFactory.getbeltStopCommand())
+                .whenPressed(commandFactory.getBeltInCommand())
+                .whenReleased(commandFactory.getBeltStopCommand())
                 .add();
         joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
-                .whenPressed(commandFactory.getbeltOutCommand())
-                .whenReleased(commandFactory.getbeltStopCommand())
+                .whenPressed(commandFactory.getBeltOutCommand())
+                .whenReleased(commandFactory.getBeltStopCommand())
                 .add();        
         joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())

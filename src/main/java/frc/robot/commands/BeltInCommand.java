@@ -7,7 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.BeltSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class beltStopCommand extends EntechCommandBase{
+public class BeltInCommand extends EntechCommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final BeltSubsystem m_subsystem;
 
@@ -16,7 +16,7 @@ public class beltStopCommand extends EntechCommandBase{
    *
    * @param subsystem The subsystem used by this command.
    */
-  public beltStopCommand(BeltSubsystem subsystem) {
+  public BeltInCommand(BeltSubsystem subsystem) {
       super(subsystem);
       m_subsystem = subsystem;
   }
@@ -29,7 +29,7 @@ public class beltStopCommand extends EntechCommandBase{
 
   @Override
   public void execute() {
-      m_subsystem.stop();
+     m_subsystem.intake(); 
   }
 
   @Override

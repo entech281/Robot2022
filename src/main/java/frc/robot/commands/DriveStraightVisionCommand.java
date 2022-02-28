@@ -8,7 +8,6 @@ public class DriveStraightVisionCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
     private final double m_speed;
     private final double m_inches;
-    private double m_initalAngle;
     private PIDController m_PID;
     private VisionSubsystem m_vision;
 
