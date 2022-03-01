@@ -31,12 +31,16 @@ private TalonSRX m_motor;
   @Override
   public void periodic(){
     if (currentMode == BeltMode.stop){
+      logger.log("belt state", "stop");
       m_motor.set(ControlMode.PercentOutput,0.0);
     } else if (currentMode == BeltMode.in){
-      m_motor.set(ControlMode.PercentOutput, 1.0);
-    } else if (currentMode == BeltMode.out){
+      logger.log("belt state", "in");
       m_motor.set(ControlMode.PercentOutput, -1.0);
+    } else if (currentMode == BeltMode.out){
+      logger.log("belt state", "out");
+      m_motor.set(ControlMode.PercentOutput, 1.0);
     }
+    logger.log("belt current",m_motor.getSupplyCurrent());
   }
   
   public void intake(){

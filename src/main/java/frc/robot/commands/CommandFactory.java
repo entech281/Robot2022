@@ -28,10 +28,10 @@ public class CommandFactory {
         return new BeltInCommand(sm.getBeltSubsystem());
     }
     public Command getBeltOutCommand(){
-        return new BeltInCommand(sm.getBeltSubsystem());
+        return new BeltOutCommand(sm.getBeltSubsystem());
     }
     public Command getBeltStopCommand(){
-        return new BeltInCommand(sm.getBeltSubsystem());
+        return new BeltStopCommand(sm.getBeltSubsystem());
     }
 
     public Command getHookUpCommand(){
