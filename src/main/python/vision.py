@@ -10,16 +10,13 @@ print("waiting 30 seconds")
 time.sleep(30)
 print("wait complete")
 
-if False:
-    ntinst = NetworkTablesInstance.getDefault()
-    ntinst.startClientTeam(281)
-    ntinst.startDSClient()
-else:
-    # NetworkTables.setTeam(281)
-    # NetworkTables.setClientMode()
-    NetworkTables.setUpdateRate(0.020)
-    # NetworkTables.initialize(server="roborio-281-frc.local")
-    NetworkTables.initialize(server="10.2.81.2")
+# ntinst = NetworkTablesInstance.getDefault()
+# ntinst.startClientTeam(281)
+# ntinst.startDSClient()
+NetworkTables.setUpdateRate(0.020)
+NetworkTables.startClientTeam(281)
+# NetworkTables.initialize(server="roborio-281-frc.local")
+NetworkTables.initialize(server="10.2.81.2")
 
 vision_nt = NetworkTables.getTable('Vision')
 
