@@ -27,6 +27,7 @@ public class IntakeSubsystem extends EntechSubsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    logger.log("roller current",m_rollerMotor.getSupplyCurrent());
   }
 
   public void armsDown() {

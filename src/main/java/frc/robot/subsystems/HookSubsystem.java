@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,6 +15,7 @@ public class HookSubsystem extends EntechSubsystem {
   private TalonSRX m_motor;
   private DigitalInput m_UpLimit;
   private DigitalInput m_DownLimit;
+  private final double motorSpeed = 0.5;
     public enum HookMode{
       idle, up, down
     }
@@ -27,6 +29,7 @@ public class HookSubsystem extends EntechSubsystem {
   public void initialize() {
     // Create the internal objects here
     m_motor = new TalonSRX(RobotConstants.CAN.HOOK_MOTOR);
+    m_motor.setNeutralMode(NeutralMode.Brake);
     m_UpLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_UP_LIMIT);
     m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT);
   }
@@ -42,9 +45,9 @@ public class HookSubsystem extends EntechSubsystem {
     if (currentMode == HookMode.idle){
       m_motor.set(ControlMode.PercentOutput, 0.0);
     } else if (currentMode == HookMode.up) {
-      m_motor.set(ControlMode.PercentOutput, 1.0);
+      m_motor.set(ControlMode.PercentOutput, motorSpeed);
     } else if (currentMode == HookMode.down) {
-      m_motor.set(ControlMode.PercentOutput, -1.0);
+      m_motor.set(ControlMode.PercentOutput, -motorSpeed);
     }
     // This method will be called once per scheduler run
   }

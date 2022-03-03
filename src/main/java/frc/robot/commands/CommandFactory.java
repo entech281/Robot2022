@@ -40,6 +40,9 @@ public class CommandFactory {
     public Command getHookDownCommand(){
         return new HookDownCommand(sm.getHookSubsystem());
     }
+    public Command getHookStopCommand(){
+        return new HookStopCommand(sm.getHookSubsystem());
+    }
     public Command getVisionDriveCommand(){
         return new VisionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
     }

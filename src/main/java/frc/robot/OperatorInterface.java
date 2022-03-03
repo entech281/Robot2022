@@ -45,9 +45,11 @@ public class OperatorInterface {
                 .add();        
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())
+                .whenReleased(commandFactory.getHookStopCommand())
                 .add();
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
+                .whenReleased(commandFactory.getHookStopCommand())
                 .add();                
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
                 .whenPressed(commandFactory.getDriveStraightVisionCommand())
@@ -63,9 +65,11 @@ public class OperatorInterface {
                 .add();        
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_UP)
                 .whenPressed(commandFactory.getHookUpCommand())
+                .whenReleased(commandFactory.getHookStopCommand())
                 .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_DOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
+                .whenReleased(commandFactory.getHookStopCommand())
                 .add();                
 
         sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );

@@ -10,11 +10,11 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.RobotConstants;
 
 public class BeltSubsystem extends EntechSubsystem {
-private TalonSRX m_motor;
+  private TalonSRX m_motor;
 
   public enum BeltMode{
-  stop, in, out, auto
-}
+    stop, in, out, auto
+  }
   private BeltMode currentMode = BeltMode.stop;
 
   public BeltSubsystem(){
