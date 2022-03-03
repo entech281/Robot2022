@@ -8,7 +8,8 @@ import frc.robot.subsystems.SubsystemManager;
 public class OperatorInterface {
 
     private Joystick driveStick;
-    private JoystickButtonManager joystickManager;
+    private JoystickButtonManager driverJoystickManager;
+    private Joystick operatorJoystick;
     private SubsystemManager sm;
     private CommandFactory commandFactory;
 
@@ -16,36 +17,37 @@ public class OperatorInterface {
         this.sm = subMan;
         this.commandFactory = cf;
         this.driveStick = new Joystick(RobotConstants.JOYSTICKS.DRIVER_JOYSTICK);
-        this.joystickManager = new JoystickButtonManager(driveStick);
+        this.driverJoystickManager = new JoystickButtonManager(driveStick);
+        this.operatorJoystick = new Joystick(RobotConstants.JOYSTICKS.OPERATOR_JOYSTICK);
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHT)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHT)
                 .whenPressed(commandFactory.getDriveStraightCommand(48, 0.5))
                 .add();
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
                 .whenPressed(commandFactory.getDriveStraightGyroCommand(60, 0.5))
                 .add();
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
                 .whenPressed(commandFactory.getTurnByAngleCommand(90))
                 .add();
 
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
                 .whenPressed(commandFactory.getbeltInCommand())
                 .whenReleased(commandFactory.getbeltStopCommand())
                 .add();
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
                 .whenPressed(commandFactory.getbeltOutCommand())
                 .whenReleased(commandFactory.getbeltStopCommand())
                 .add();        
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())
                 .add();
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
                 .add();                
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
                 .whenPressed(commandFactory.getDriveStraightVisionCommand())
                 .add();
 

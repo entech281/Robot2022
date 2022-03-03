@@ -46,8 +46,11 @@ public class CommandFactory {
     public Command getDriveStraightVisionCommand(){
         return new DriveStraightVisionCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), 24, 0.5);
     }
+    public Command getDriveTillBallPickUpCommand() {
+        return new DriveTillBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
+    }
     public Command getAutonomousCommand(){
-        return getAutonomousCommand1();
+        return getDriveTillBallPickUpCommand(); 
     }
     public Command getAutonomousCommand1(){
         return new SequentialCommandGroup(

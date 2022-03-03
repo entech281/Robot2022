@@ -9,7 +9,7 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     private final static String blue = "BLUE";
     private final static String red = "RED";
     private final static String none = "IDK bro";
-    private final static int proximityThreshold = 420;
+    private final static int proximityThreshold = 50;
 
     @Override
     public void initialize() {
@@ -20,13 +20,13 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     public void periodic() {
         Color detectedColor = colorSensor.getColor();
 
-        logger.log("red value",   detectedColor.red);
-        logger.log("green value", detectedColor.green);
-        logger.log("blue value",  detectedColor.blue);
-        logger.log("proximity",   colorSensor.getProximity());
+        logger.log("red value",      detectedColor.red);
+        logger.log("green value",    detectedColor.green);
+        logger.log("blue value",     detectedColor.blue);
+        logger.log("proximity",      colorSensor.getProximity());
         logger.log("ball isPresent", isBallPresent());
-        logger.log("ball isRed",    isBallRed());
-        logger.log("ball isBlue",   isBallBlue());
+        logger.log("ball isRed",     isBallRed());
+        logger.log("ball isBlue",    isBallBlue());
     }
 
     public String getSensorColor() {

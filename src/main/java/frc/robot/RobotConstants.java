@@ -19,6 +19,7 @@ public final class RobotConstants {
     }
     public interface JOYSTICKS {
         public static final int DRIVER_JOYSTICK = 0;
+        public static final int OPERATOR_JOYSTICK = 1;
     }
     public interface DRIVER_STICK {
         public static final int DRIVESTRAIGHT = 1;
@@ -30,6 +31,9 @@ public final class RobotConstants {
         public static final int DRIVESTRAIGHTVISION = 7;
         public static final int HOOKUP = 11;
         public static final int HOOKDOWN= 12;
+    }
+    public interface OPERATOR_JOYSTICK {
+        public static final int VISIONDRIVE = 1;
     }
     public interface CAN {
         public static final int FRONT_RIGHT_MOTOR = 1;

@@ -5,9 +5,9 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveStraightGyroCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
+    private final double m_inches;
     private final double m_speed;
     private double m_initalAngle;
-    private final double m_inches;
     private PIDController m_PID;
 
     public DriveStraightGyroCommand(DriveSubsystem drive, double inches, double speed){
