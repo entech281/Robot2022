@@ -2,11 +2,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.util.Color;
+// import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensorSubsystem extends EntechSubsystem{
     private ColorSensorV3  colorSensor;
-    private final static int proximityThreshold = 60;
+    private final static int proximityThreshold = 70;
 
     @Override
     public void initialize() {

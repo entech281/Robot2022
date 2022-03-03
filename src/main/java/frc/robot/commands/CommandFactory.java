@@ -53,16 +53,18 @@ public class CommandFactory {
         return new DriveUntilBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
     }
     public Command getAutonomousCommand(){
-        return getDriveUntilBallPickUpCommand();
+        return getAutonomousCommand1();
     }
     public Command getAutonomousCommand1(){
         return new SequentialCommandGroup(
-            getDriveStraightGyroCommand(48, 0.5),
+            getBeltInCommand(),
+            new WaitCommand(1.0),
+            getBeltStopCommand(),
             getTurnByAngleCommand(180),
-            getDriveStraightGyroCommand(48, 0.5),
-            getBeltInCommand(),   //.withTimeout(10),
+            getDriveUntilBallPickUpCommand(),
+            getBeltInCommand(),
             new WaitCommand(5),
-            getDriveStraightGyroCommand(36, 0.5)
+            getBeltStopCommand()
         );
     }
 }
