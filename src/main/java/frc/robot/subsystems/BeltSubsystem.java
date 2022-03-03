@@ -33,9 +33,9 @@ private TalonSRX m_motor;
     if (currentMode == BeltMode.stop){
       m_motor.set(ControlMode.PercentOutput,0.0);
     } else if (currentMode == BeltMode.in){
-      m_motor.set(ControlMode.PercentOutput, 1.0);
-    } else if (currentMode == BeltMode.out){
       m_motor.set(ControlMode.PercentOutput, -1.0);
+    } else if (currentMode == BeltMode.out){
+      m_motor.set(ControlMode.PercentOutput, 1.0);
     }
   }
   

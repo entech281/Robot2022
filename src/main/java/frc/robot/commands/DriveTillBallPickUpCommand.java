@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
@@ -11,6 +12,7 @@ public class DriveTillBallPickUpCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
     private final VisionSubsystem m_vision;
     private final ColorSensorSubsystem m_color;
+    private Timer m_timer;
     private PIDController m_PID;
 
     public DriveTillBallPickUpCommand(DriveSubsystem drive, VisionSubsystem vision, ColorSensorSubsystem color, double speed){
@@ -19,6 +21,7 @@ public class DriveTillBallPickUpCommand extends EntechCommandBase {
         m_drive = drive;
         m_color = color;
         m_speed = speed;
+        m_timer = new Timer();
         m_PID = new PIDController(-0.004, 0, 0);
     }
     
@@ -28,6 +31,9 @@ public class DriveTillBallPickUpCommand extends EntechCommandBase {
         m_drive.setBrake();
         m_PID.setSetpoint(0);
         m_PID.setTolerance(4);  // IN PIXELS
+        m_timer.stop();
+        m_timer.reset();
+        m_timer.start();
     }
 
     public void execute(){
@@ -42,6 +48,9 @@ public class DriveTillBallPickUpCommand extends EntechCommandBase {
     }
 
     public boolean isFinished(){
+        if (m_timer.get() < 0.5) {
+            return false;
+        }
         if (m_color.isBallPresent()){
             return true;
         }

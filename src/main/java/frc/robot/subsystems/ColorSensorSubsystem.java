@@ -9,7 +9,7 @@ public class ColorSensorSubsystem extends EntechSubsystem{
     private final static String blue = "BLUE";
     private final static String red = "RED";
     private final static String none = "IDK bro";
-    private final static int proximityThreshold = 50;
+    private final static int proximityThreshold = 70;
 
     @Override
     public void initialize() {

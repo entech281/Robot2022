@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
+import pabeles.concurrency.ConcurrencyOps.Reset;
 /**
  *
  * @author dcowden
@@ -28,10 +29,10 @@ public class CommandFactory {
         return new beltInCommand(sm.getBeltSubsystem());
     }
     public Command getbeltOutCommand(){
-        return new beltInCommand(sm.getBeltSubsystem());
+        return new beltOutCommand(sm.getBeltSubsystem());
     }
     public Command getbeltStopCommand(){
-        return new beltInCommand(sm.getBeltSubsystem());
+        return new beltStopCommand(sm.getBeltSubsystem());
     }
 
     public Command getHookUpCommand(){
@@ -50,16 +51,18 @@ public class CommandFactory {
         return new DriveTillBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
     }
     public Command getAutonomousCommand(){
-        return getDriveTillBallPickUpCommand(); 
+        //return getDriveTillBallPickUpCommand();
+        return getAutonomousCommand1(); 
     }
     public Command getAutonomousCommand1(){
         return new SequentialCommandGroup(
-            getDriveStraightGyroCommand(48, 0.5),
+            getbeltInCommand(),
+            new WaitCommand(1.0),
+            getbeltStopCommand(),
             getTurnByAngleCommand(180),
-            getDriveStraightGyroCommand(48, 0.5),
-            getbeltInCommand(),//.withTimeout(10),
+            getDriveTillBallPickUpCommand(),
+            getbeltInCommand(),
             new WaitCommand(5),
-            getDriveStraightGyroCommand(36, 0.5)
-        );
+            getbeltStopCommand());
     }
 }
