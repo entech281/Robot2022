@@ -16,7 +16,7 @@ public class EntechCommandBase extends CommandBase {
     protected DataLogger logger;
 
     public EntechCommandBase(EntechSubsystem sub) {
-        this(sub, DEFAULT_TIMEOUT_SECONDS);
+        addRequirements(sub);
         logger = DataLoggerFactory.getLoggerFactory().createDataLogger(this.getName());
     }
 
@@ -25,6 +25,10 @@ public class EntechCommandBase extends CommandBase {
         logger = DataLoggerFactory.getLoggerFactory().createDataLogger(this.getName());
     }
     
+    public EntechCommandBase(EntechSubsystem sub1, EntechSubsystem sub2, EntechSubsystem sub3) {
+        addRequirements(sub1, sub2, sub3);
+        logger = DataLoggerFactory.getLoggerFactory().createDataLogger(this.getName());
+    }
     
     public EntechCommandBase(EntechSubsystem subsystem, double timeout) {
         addRequirements(subsystem);

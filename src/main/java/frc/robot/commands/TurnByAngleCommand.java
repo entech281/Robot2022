@@ -9,7 +9,7 @@ public class TurnByAngleCommand extends EntechCommandBase {
     private double m_initalAngle;
     private double angle;
     private PIDController m_PID;
-    private double m_minTurnSpeed = 0.2;
+    private double m_minTurnSpeed = 0.3;
     private double m_maxTurnSpeed = 0.7;
 
     public TurnByAngleCommand(DriveSubsystem drive, double angle){

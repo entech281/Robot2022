@@ -7,49 +7,68 @@ import frc.robot.subsystems.SubsystemManager;
 
 public class OperatorInterface {
 
-    private Joystick driveStick;
-    private JoystickButtonManager joystickManager;
+    private Joystick driveJoystick;
+    private JoystickButtonManager driverJoystickManager;
+    private Joystick operatorJoystick;
+    private JoystickButtonManager operatorJoystickManager;
     private SubsystemManager sm;
     private CommandFactory commandFactory;
 
     public OperatorInterface(final SubsystemManager subMan, final CommandFactory cf) {
         this.sm = subMan;
         this.commandFactory = cf;
-        this.driveStick = new Joystick(RobotConstants.JOYSTICKS.DRIVER_JOYSTICK);
-        this.joystickManager = new JoystickButtonManager(driveStick);
+        this.driveJoystick = new Joystick(RobotConstants.JOYSTICKS.DRIVER_JOYSTICK);
+        this.driverJoystickManager = new JoystickButtonManager(driveJoystick);
+        this.operatorJoystick = new Joystick(RobotConstants.JOYSTICKS.OPERATOR_JOYSTICK);
+        this.operatorJoystickManager = new JoystickButtonManager(operatorJoystick);
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHT)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHT)
                 .whenPressed(commandFactory.getDriveStraightCommand(48, 0.5))
                 .add();
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
                 .whenPressed(commandFactory.getDriveStraightGyroCommand(60, 0.5))
                 .add();
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
                 .whenPressed(commandFactory.getTurnByAngleCommand(90))
                 .add();
 
 
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
                 .whenPressed(commandFactory.getBeltInCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
                 .whenPressed(commandFactory.getBeltOutCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();        
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())
                 .add();
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKDOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
                 .add();                
-        joystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
                 .whenPressed(commandFactory.getDriveStraightVisionCommand())
                 .add();
 
-        sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveStick) );
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_IN)
+                .whenPressed(commandFactory.getBeltInCommand())
+                .whenReleased(commandFactory.getBeltStopCommand())
+                .add();
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_OUT)
+                .whenPressed(commandFactory.getBeltOutCommand())
+                .whenReleased(commandFactory.getBeltStopCommand())
+                .add();        
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_UP)
+                .whenPressed(commandFactory.getHookUpCommand())
+                .add();
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_DOWN)
+                .whenPressed(commandFactory.getHookDownCommand())
+                .add();                
+
+        sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );
     }
 
 }
