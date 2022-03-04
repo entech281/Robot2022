@@ -16,11 +16,11 @@ public class HookSubsystem extends EntechSubsystem {
   private DigitalInput m_UpLimit;
   private DigitalInput m_DownLimit;
   private final double motorSpeed = 1.0;
-    public enum HookMode{
-      idle, up, down
-    }
-    private HookMode currentMode = HookMode.idle;
-  /** Creates a new ExampleSubsystem. */
+  public enum HookMode{
+    idle, up, down
+  }
+  private HookMode currentMode = HookMode.idle;
+  
   public HookSubsystem() {
   }
 
@@ -39,6 +39,8 @@ public class HookSubsystem extends EntechSubsystem {
 
   @Override
   public void periodic() {
+    // TODO: the checks against the limit switches below are reversed since there are currently
+    //   no limit siwtches on the robot and they read true by default.  Fix this or remove limit switches.
     if ((currentMode == HookMode.up) && (m_UpLimit.get() == false)) {
       currentMode = HookMode.idle;
     }
