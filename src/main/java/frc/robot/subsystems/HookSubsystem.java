@@ -15,7 +15,7 @@ public class HookSubsystem extends EntechSubsystem {
   private TalonSRX m_motor;
   private DigitalInput m_UpLimit;
   private DigitalInput m_DownLimit;
-  private final double motorSpeed = 0.5;
+  private final double motorSpeed = 1.0;
     public enum HookMode{
       idle, up, down
     }
@@ -30,16 +30,19 @@ public class HookSubsystem extends EntechSubsystem {
     // Create the internal objects here
     m_motor = new TalonSRX(RobotConstants.CAN.HOOK_MOTOR);
     m_motor.setNeutralMode(NeutralMode.Brake);
+    // m_motor.enableCurrentLimit(true);
+    // m_motor.configContinuousCurrentLimit(40);
+    // m_motor.configPeakCurrentLimit(0);
     m_UpLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_UP_LIMIT);
     m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT);
   }
 
   @Override
   public void periodic() {
-    if ((currentMode == HookMode.up) && (m_UpLimit.get() == true)) {
+    if ((currentMode == HookMode.up) && (m_UpLimit.get() == false)) {
       currentMode = HookMode.idle;
     }
-    if ((currentMode == HookMode.down) && (m_DownLimit.get() == true)) {
+    if ((currentMode == HookMode.down) && (m_DownLimit.get() == false)) {
       currentMode = HookMode.idle;
     }
     if (currentMode == HookMode.idle){
@@ -49,7 +52,7 @@ public class HookSubsystem extends EntechSubsystem {
     } else if (currentMode == HookMode.down) {
       m_motor.set(ControlMode.PercentOutput, -motorSpeed);
     }
-    // This method will be called once per scheduler run
+    // logger.log("hook current",m_motor.getSupplyCurrent());
   }
 
   public void up() {
