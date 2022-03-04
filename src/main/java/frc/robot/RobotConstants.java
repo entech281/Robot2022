@@ -27,16 +27,16 @@ public final class RobotConstants {
         public static final int TURNBYANGLE = 3;
         public static final int BELTIN = 9;
         public static final int BELTOUT = 10;
-        public static final int DRIVESTRAIGHTGYRO = 6;
-        public static final int DRIVESTRAIGHTVISION = 7;
+        public static final int INTAKEIN = 7;
+        public static final int INTAKEOUT = 8;
         public static final int HOOKUP = 11;
         public static final int HOOKDOWN= 12;
     }
     public interface OPERATOR_STICK {
         public static final int INTAKE_DEPLOY = 2;
         public static final int INTAKE_RETRACT = 3;
-        public static final int INTAKE_FORWARD = 4;
-        public static final int INTAKE_REVERSE = 5;
+        public static final int INTAKE_FORWARD = 7;
+        public static final int INTAKE_REVERSE = 8;
         public static final int BELT_IN = 9;
         public static final int BELT_OUT = 10;
         public static final int HOOK_UP = 11;

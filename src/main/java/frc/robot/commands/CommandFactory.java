@@ -34,6 +34,16 @@ public class CommandFactory {
         return new BeltStopCommand(sm.getBeltSubsystem());
     }
 
+    public Command getIntakeInCommand(){
+        return new IntakeInCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeOutCommand(){
+        return new IntakeOutCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeStopCommand(){
+        return new IntakeStopCommand(sm.getIntakeSubsystem());
+    }
+
     public Command getHookUpCommand(){
         return new HookUpCommand(sm.getHookSubsystem());
     }

@@ -26,14 +26,9 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getDriveStraightCommand(48, 0.5))
                 .add();
 
-        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTGYRO)
-                .whenPressed(commandFactory.getDriveStraightGyroCommand(60, 0.5))
-                .add();
-
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNBYANGLE)
                 .whenPressed(commandFactory.getTurnByAngleCommand(90))
                 .add();
-
 
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
                 .whenPressed(commandFactory.getBeltInCommand())
@@ -43,6 +38,14 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getBeltOutCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();        
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.INTAKEIN)
+                .whenPressed(commandFactory.getIntakeInCommand())
+                .whenReleased(commandFactory.getIntakeStopCommand())
+                .add();
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.INTAKEOUT)
+                .whenPressed(commandFactory.getIntakeOutCommand())
+                .whenReleased(commandFactory.getIntakeStopCommand())
+                .add();
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.HOOKUP)
                 .whenPressed(commandFactory.getHookUpCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
@@ -51,10 +54,6 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getHookDownCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
                 .add();                
-        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.DRIVESTRAIGHTVISION)
-                .whenPressed(commandFactory.getDriveStraightVisionCommand())
-                .add();
-
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_IN)
                 .whenPressed(commandFactory.getBeltInCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
@@ -70,8 +69,7 @@ public class OperatorInterface {
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_DOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
-                .add();                
-
+                .add();               
         sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );
     }
 
