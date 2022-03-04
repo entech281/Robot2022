@@ -13,9 +13,10 @@ public class BeltSubsystem extends EntechSubsystem {
   private TalonSRX m_motor;
 
   public enum BeltMode{
-    stop, in, out, auto
+    stop, in, out
   }
   private BeltMode currentMode = BeltMode.stop;
+  private final double motorSpeed = 1.0;
 
   public BeltSubsystem(){
   }
@@ -25,20 +26,23 @@ public class BeltSubsystem extends EntechSubsystem {
   public void initialize(){
     m_motor = new TalonSRX(RobotConstants.CAN.BELT_MOTOR);
     currentMode = BeltMode.stop;
-    // Create the internal objects here 
   }
 
   @Override
   public void periodic(){
-    if (currentMode == BeltMode.stop){
-      logger.log("belt state", "stop");
-      m_motor.set(ControlMode.PercentOutput,0.0);
-    } else if (currentMode == BeltMode.in){
-      logger.log("belt state", "in");
-      m_motor.set(ControlMode.PercentOutput, -1.0);
-    } else if (currentMode == BeltMode.out){
-      logger.log("belt state", "out");
-      m_motor.set(ControlMode.PercentOutput, 1.0);
+    switch (currentMode) {
+      case stop:
+        logger.log("belt state", "stop");
+        m_motor.set(ControlMode.PercentOutput, 0.0);
+        break;
+      case in:
+        logger.log("belt state", "in");
+        m_motor.set(ControlMode.PercentOutput, -motorSpeed);
+        break;
+      case out:
+        logger.log("belt state", "out");
+        m_motor.set(ControlMode.PercentOutput, motorSpeed);
+        break;
     }
     logger.log("belt current",m_motor.getSupplyCurrent());
   }
