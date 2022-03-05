@@ -17,7 +17,7 @@ public class DriveUntilEncoderZeroCommand extends EntechCommandBase {
     }
 
     public void initialize(){
-        m_distance = Math.abs((m_drive.getLeftDistance() + m_drive.getRightDistance()) / 2);
+        m_distance = 0.5*(m_drive.getLeftDistance() + m_drive.getRightDistance());
         if (m_distance > 0) {
             m_speed = -m_speed;
         }
@@ -35,11 +35,11 @@ public class DriveUntilEncoderZeroCommand extends EntechCommandBase {
     }
 
     public boolean isFinished(){
-        double EDistance = Math.abs((m_drive.getLeftDistance() + m_drive.getRightDistance()) / 2);
-        if ((m_distance > 0) && (EDistance < 0 )){
+        double EDistance = 0.5*(m_drive.getLeftDistance() + m_drive.getRightDistance());
+        if ((m_distance > 0) && (EDistance < 0.05*m_distance )){
             return true;
         }
-        if ((m_distance < 0) && (EDistance > 0)){
+        if ((m_distance < 0) && (EDistance > 0.05*m_distance)){
             return true;
         }
         return false;
