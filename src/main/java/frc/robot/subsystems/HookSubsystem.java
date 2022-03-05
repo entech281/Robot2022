@@ -54,7 +54,7 @@ public class HookSubsystem extends EntechSubsystem {
     } else if (currentMode == HookMode.down) {
       m_motor.set(ControlMode.PercentOutput, -motorSpeed);
     }
-    // logger.log("hook current",m_motor.getSupplyCurrent());
+    logger.log("hook current",m_motor.getSupplyCurrent());
   }
 
   public void up() {

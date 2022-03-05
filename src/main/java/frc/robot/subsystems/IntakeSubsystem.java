@@ -69,10 +69,10 @@ public class IntakeSubsystem extends EntechSubsystem {
     // Manage the Roller
     switch (currentRollerMode) {
       case in:
-        m_rollerMotor.set(ControlMode.PercentOutput, rollerSpeed);
+        m_rollerMotor.set(ControlMode.PercentOutput, -rollerSpeed);
         break;
       case out:
-        m_rollerMotor.set(ControlMode.PercentOutput, -rollerSpeed);
+        m_rollerMotor.set(ControlMode.PercentOutput, rollerSpeed);
         break;
       case off:
         m_rollerMotor.set(ControlMode.PercentOutput, 0.0);
