@@ -41,7 +41,7 @@ public class VisionSubsystem extends EntechSubsystem {
         }
         if (DriverStation.getAlliance() == DriverStation.Alliance.Blue){
             Number[] arrLowerBound = {100, 100, 0};
-            Number[] arrUpperBound = {120, 255, 255};
+            Number[] arrUpperBound = {130, 255, 255};
             tableEntryLowerBound.forceSetNumberArray(arrLowerBound);  
             tableEntryUpperBound.forceSetNumberArray(arrUpperBound);
         }
