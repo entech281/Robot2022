@@ -62,6 +62,9 @@ public class CommandFactory {
     public Command getDriveUntilBallPickUpCommand() {
         return new DriveUntilBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
     }
+    public Command getDriveUntilEncoderZeroCommand() {
+        return new DriveUntilEncoderZeroCommand(sm.getDriveSubsystem(), 0.5);
+    }
     public Command getAutonomousCommand(){
         return getAutonomousCommand1();
     }
