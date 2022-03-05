@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
-import pabeles.concurrency.ConcurrencyOps.Reset;
 /**
  *
  * @author dcowden
@@ -24,7 +23,6 @@ public class CommandFactory {
     public Command getTurnByAngleCommand(double angle){
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
-
     public Command getbeltInCommand(){
         return new beltInCommand(sm.getBeltSubsystem());
     }
@@ -34,7 +32,6 @@ public class CommandFactory {
     public Command getbeltStopCommand(){
         return new beltStopCommand(sm.getBeltSubsystem());
     }
-
     public Command getHookUpCommand(){
         return new HookUpCommand(sm.getHookSubsystem());
     }

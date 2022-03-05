@@ -91,6 +91,9 @@ public class DriveSubsystem extends EntechSubsystem {
     public double getRightDistance() {
         return (0.5 * (frontRightEncoder.getPosition() + rearRightEncoder.getPosition()));
     }
+    public double getEncoderDistance() {
+        return (0.5 * (getRightDistance() + getLeftDistance()));
+    }
     public void setBrake() {
         frontLeftSpark.setIdleMode(IdleMode.kBrake);
         frontRightSpark.setIdleMode(IdleMode.kBrake);
