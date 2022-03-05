@@ -65,11 +65,17 @@ public class CommandFactory {
     public Command getAutonomousCommand(){
         return getAutonomousCommand1();
     }
-    public Command getAutonomousCommand1(){
+    public Command getShootBallCommand(){
         return new SequentialCommandGroup(
             getBeltInCommand(),
             new WaitCommand(1.0),
-            getBeltStopCommand(),
+            getBeltStopCommand()
+        );
+    }
+
+    public Command getAutonomousCommand1(){
+        return new SequentialCommandGroup(
+            getShootBallCommand(),
             getTurnByAngleCommand(180),
             getDriveUntilBallPickUpCommand(),
             getBeltInCommand(),
