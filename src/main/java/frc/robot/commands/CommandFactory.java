@@ -92,7 +92,7 @@ public class CommandFactory {
         );
     }
 
-    public Command getAutonomousCommand1(){
+    public Command getAutonomousCommand0(){
         return new SequentialCommandGroup(
             getResetGyroCommand(),
             getShootBallCommand(),
@@ -107,8 +107,14 @@ public class CommandFactory {
             getShootBallCommand()
         );
     }
-    public Command getAutonomousCommand0(){
-        return getAutonomousCommand1();
+    public Command getAutonomousCommand1(){
+        return new SequentialCommandGroup(
+            getAutonomousCommand0(),
+            getTurnUntillBallSeenCommand(),
+            getIntakeInCommand(),
+            getBeltInCommand(),
+            getDriveUntilBallPickUpCommand()
+        );
     }
     public Command getAutonomousCommand2(){
         return getAutonomousCommand1();
