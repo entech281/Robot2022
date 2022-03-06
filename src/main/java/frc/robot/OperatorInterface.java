@@ -72,5 +72,11 @@ public class OperatorInterface {
                 .add();               
         sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );
     }
-
+        public int getAutonomousChoice(){
+            if (operatorJoystick.getRawButton(RobotConstants.OPERATOR_STICK.AUTO1))
+                return 1;
+            if (operatorJoystick.getRawButton(RobotConstants.OPERATOR_STICK.AUTO2))
+                return 2;
+            return 0;
+        }
 }

@@ -41,6 +41,9 @@ public final class RobotConstants {
         public static final int BELT_OUT = 10;
         public static final int HOOK_UP = 11;
         public static final int HOOK_DOWN= 12;
+        public static final int AUTO1 = 4;
+        public static final int AUTO2= 5;
+
     }
     public interface CAN {
         public static final int FRONT_RIGHT_MOTOR = 1;
