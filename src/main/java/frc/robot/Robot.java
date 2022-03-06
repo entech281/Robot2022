@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // Get selected routine 
-    autoCommand = commandFactory.getAutonomousCommand();
+    autoCommand = commandFactory.getAutonomousCommand(oi.getAutonomousChoice());
 
     // schedule the autonomous command
     if (autoCommand != null) {
