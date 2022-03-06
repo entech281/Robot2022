@@ -58,7 +58,7 @@ public class IntakeSubsystem extends EntechSubsystem {
     m_armMotor = new TalonSRX(RobotConstants.CAN.ARM_MOTOR);
     m_rollerMotor = new TalonSRX(RobotConstants.CAN.ROLLER_MOTOR);
     armMotorController = new TalonPositionController(m_armMotor, INTAKEARM, true);
-    armMotorController.configure()
+    armMotorController.configure();
     m_armMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     m_timer = new Timer();
     currentRollerMode = RollerMode.off;
@@ -81,7 +81,7 @@ public class IntakeSubsystem extends EntechSubsystem {
     armMotorController.resetPosition();
   }
 
-  public 
+   
   @Override
   public void periodic() {
 
