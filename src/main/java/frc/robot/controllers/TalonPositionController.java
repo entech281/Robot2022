@@ -26,7 +26,7 @@ public class TalonPositionController extends BaseTalonController implements Posi
     }
 
     public TalonPositionController(TalonSRX talon, TalonSettings settings, boolean reversed) {
-        super(talon, settings, reversed);
+        super(talon, settings,reversed);
     }
 
     @Override

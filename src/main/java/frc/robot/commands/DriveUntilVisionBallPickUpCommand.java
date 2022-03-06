@@ -42,7 +42,7 @@ public class DriveUntilVisionBallPickUpCommand extends EntechCommandBase {
     }
 
     public boolean isFinished(){
-        if (m_vision.getBallY() < -117){
+        if (m_vision.getBallY() < -115){
             return true;
         }
         return false;

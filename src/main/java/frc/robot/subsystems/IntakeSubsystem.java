@@ -45,12 +45,14 @@ public class IntakeSubsystem extends EntechSubsystem {
   public static TalonSettings INTAKEARM = TalonSettingsBuilder.defaults()
           .withCurrentLimits(20, 15, 200)
           .brakeInNeutral()
-          .withDirections()
+          .withDirections(true, true)
           .noMotorOutputLimits()
           .noMotorStartupRamping()
           .usePositionControl()
-          .enableLimitSwitch(true).
-          build();
+          .withGains(12, 2.56 * 5, 0, 0)
+          .withMotionProfile(1000, 1000, 5)
+          .enableLimitSwitch(true)
+          .build();
 
   // Entech does all the creation work in the initialize method
   @Override
@@ -66,7 +68,7 @@ public class IntakeSubsystem extends EntechSubsystem {
   }
 
   public void armGoToHome(){
-    return m_armMotor.set(ControlMode.PercentOutput, 0.15);
+    m_armMotor.set(ControlMode.PercentOutput, 0.15);
   }
   
   public Boolean isatHome() {
