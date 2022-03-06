@@ -6,8 +6,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.controllers.TalonPositionController;
+import frc.robot.controllers.TalonSettings;
+import frc.robot.controllers.TalonSettingsBuilder;
 import frc.robot.RobotConstants;
 
 public class IntakeSubsystem extends EntechSubsystem {
@@ -15,12 +19,14 @@ public class IntakeSubsystem extends EntechSubsystem {
   private TalonSRX m_rollerMotor;
 
   private Timer m_timer;
+  private TalonPositionController armMotorController;
   private final double timerIgnoreUntil = 0.2;
   private final double timerAverageUntil = 0.7;
   private final double ballDetectedThreshold = 1.1;
   private double avgCurrent;
   private int avgCount;
   private boolean ballDetected = false;
+  private boolean intakeHomed = false;
 
   public enum RollerMode{
     off, in, out
@@ -36,21 +42,62 @@ public class IntakeSubsystem extends EntechSubsystem {
   public IntakeSubsystem() {
   }
 
+  public static TalonSettings INTAKEARM = TalonSettingsBuilder.defaults()
+          .withCurrentLimits(20, 15, 200)
+          .brakeInNeutral()
+          .withDirections()
+          .noMotorOutputLimits()
+          .noMotorStartupRamping()
+          .usePositionControl()
+          .enableLimitSwitch(true).
+          build();
+
   // Entech does all the creation work in the initialize method
   @Override
   public void initialize() {
     m_armMotor = new TalonSRX(RobotConstants.CAN.ARM_MOTOR);
     m_rollerMotor = new TalonSRX(RobotConstants.CAN.ROLLER_MOTOR);
+    armMotorController = new TalonPositionController(m_armMotor, INTAKEARM, true);
+    armMotorController.configure()
+    m_armMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     m_timer = new Timer();
     currentRollerMode = RollerMode.off;
     currentArmMode = ArmMode.up;
   }
 
+  public void armGoToHome(){
+    return m_armMotor.set(ControlMode.PercentOutput, 0.15);
+  }
+  
+  public Boolean isatHome() {
+    return intakeHomed;
+  }
+
+  public boolean isLimitSwitchHit(){
+    return m_armMotor.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
+  public void reset(){
+    armMotorController.resetPosition();
+  }
+
+  public 
   @Override
   public void periodic() {
+
+     if(isLimitSwitchHit()){
+       reset();
+       intakeHomed = true;
+     }
+     if (!isatHome()){
+       armGoToHome();
+     }
+
     double current;
     // Manage the Arm
     //   TODO: Implement arm management
+
+
 
     // Calculate average running current of the roller
     current = m_rollerMotor.getSupplyCurrent();
