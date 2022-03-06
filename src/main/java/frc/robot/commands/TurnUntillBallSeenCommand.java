@@ -14,10 +14,10 @@ public class TurnUntillBallSeenCommand extends EntechCommandBase {
     private double m_minTurnSpeed = 0.3;
     private double m_maxTurnSpeed = 0.7;
 
-    public TurnUntillBallSeenCommand(DriveSubsystem drive, double angle){
+    public TurnUntillBallSeenCommand(DriveSubsystem drive, VisionSubsystem vision){
         super(drive);
         m_drive = drive;
-        this.angle = angle;
+        m_vision = vision;
         m_PID = new PIDController(0.015, 0, 0);
     }
     
@@ -32,25 +32,26 @@ public class TurnUntillBallSeenCommand extends EntechCommandBase {
     }
 
     public void execute(){
-        double currentAngle = m_drive.getAngle();
-        double adjustment = m_PID.calculate( m_finalAngle - currentAngle);
-        if ((adjustment > 0) && (adjustment < m_minTurnSpeed)) {
-            adjustment = m_minTurnSpeed;
-        }
-        if ((adjustment < 0) && (adjustment > -m_minTurnSpeed)) {
-            adjustment = -m_minTurnSpeed;
-        }
-        if ((adjustment > 0) && (adjustment > m_maxTurnSpeed)) {
-            adjustment = m_maxTurnSpeed;
-        }
-        if ((adjustment < 0) && (adjustment < -m_maxTurnSpeed)) {
-            adjustment = -m_maxTurnSpeed;
-        }
-        m_drive.arcadeDrive( 0, adjustment);
-    }
+
+    //     double currentAngle = ;
+    //     double adjustment = m_PID.calculate( m_finalAngle - currentAngle);
+    //     if ((adjustment > 0) && (adjustment < m_minTurnSpeed)) {
+    //         adjustment = m_minTurnSpeed;
+    //     }
+    //     if ((adjustment < 0) && (adjustment > -m_minTurnSpeed)) {
+    //         adjustment = -m_minTurnSpeed;
+    //     }
+    //     if ((adjustment > 0) && (adjustment > m_maxTurnSpeed)) {
+    //         adjustment = m_maxTurnSpeed;
+    //     }
+    //     if ((adjustment < 0) && (adjustment < -m_maxTurnSpeed)) {
+    //         adjustment = -m_maxTurnSpeed;
+    //     }
+    m_drive.arcadeDrive( 0, 0.4);
+}
 
     public boolean isFinished(){
-        if (m_vision.isBallFound()){
+        if ((Math.abs(m_vision.getBallX()) > 0) && (Math.abs(m_vision.getBallX()) <= 5)) {
             return true;
         }
         return false;

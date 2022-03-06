@@ -69,7 +69,10 @@ public class OperatorInterface {
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_DOWN)
                 .whenPressed(commandFactory.getHookDownCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
-                .add();               
+                .add();
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNUNTILLBALLSEEN)
+                .whenPressed(commandFactory.getTurnUntillBallSeenCommand())
+                .add();
         sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );
     }
 

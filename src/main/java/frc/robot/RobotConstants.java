@@ -25,10 +25,11 @@ public final class RobotConstants {
         public static final int DRIVESTRAIGHT = 1;
         public static final int VISIONDRIVE = 2;
         public static final int TURNBYANGLE = 3;
-        public static final int BELTIN = 9;
-        public static final int BELTOUT = 10;
+        public static final int TURNUNTILLBALLSEEN = 4;
         public static final int INTAKEIN = 7;
         public static final int INTAKEOUT = 8;
+        public static final int BELTIN = 9;
+        public static final int BELTOUT = 10;
         public static final int HOOKUP = 11;
         public static final int HOOKDOWN= 12;
     }

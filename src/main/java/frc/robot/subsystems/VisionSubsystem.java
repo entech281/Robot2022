@@ -10,6 +10,8 @@ public class VisionSubsystem extends EntechSubsystem {
     private NetworkTable table;
     private static NetworkTableEntry tableEntryLowerBound;
     private static NetworkTableEntry tableEntryUpperBound;
+    private int m_ballX = getBallX();
+    private int m_ballY = getBallY();
     private int rpi_counter;
     private int rpi_dead_counter;
     private int rio_counter;
@@ -80,6 +82,13 @@ public class VisionSubsystem extends EntechSubsystem {
         logger.log("Ball Vertical Offset", y_pos);
         logger.log("Vision Ball Found?", isBallFound);        
         
+    }
+
+    public Boolean isBallCenter() {
+        if ((m_ballX <= 2) && (m_ballX >= -2) && (m_ballY <= 2) && (m_ballY >= 2)) {
+            return true;
+        } 
+        return false;
     }
 
     public Boolean isBallFound() {

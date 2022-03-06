@@ -27,7 +27,6 @@ public class CommandFactory {
     public Command getTurnToGyroAngleCommand(double angle){
         return new TurnToGyroAngleCommand(sm.getDriveSubsystem(), angle);
     }
-
     public Command getBeltInCommand(){
         return new BeltInCommand(sm.getBeltSubsystem());
     }
@@ -40,7 +39,6 @@ public class CommandFactory {
     public Command getAutoBeltCommand(){
         return new AutoBeltCommand(sm.getBeltSubsystem(),sm.getColorSensorSubsystem());
     }
-
     public Command getIntakeInCommand(){
         return new IntakeInCommand(sm.getIntakeSubsystem());
     }
@@ -50,7 +48,6 @@ public class CommandFactory {
     public Command getIntakeStopCommand(){
         return new IntakeStopCommand(sm.getIntakeSubsystem());
     }
-
     public Command getHookUpCommand(){
         return new HookUpCommand(sm.getHookSubsystem());
     }
@@ -60,7 +57,6 @@ public class CommandFactory {
     public Command getHookStopCommand(){
         return new HookStopCommand(sm.getHookSubsystem());
     }
-
     public Command getVisionDriveCommand(){
         return new VisionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
     }
@@ -75,6 +71,9 @@ public class CommandFactory {
     }
     public Command getResetGyroCommand() {
         return new InstantCommand(() -> sm.getDriveSubsystem().resetGyro(), sm.getDriveSubsystem());
+    }
+    public Command getTurnUntillBallSeenCommand() {
+        return new TurnUntillBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
     }
     public Command getAutonomousCommand(){
         return getAutonomousCommand1();
