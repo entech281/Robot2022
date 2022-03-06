@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.sql.Time;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -11,6 +13,7 @@ import frc.robot.subsystems.SubsystemManager;
 public class CommandFactory {
 
     private final SubsystemManager sm;
+
     public CommandFactory(SubsystemManager subsystemManager){
         this.sm = subsystemManager;
     }
@@ -24,8 +27,8 @@ public class CommandFactory {
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
 
-    public Command getBeltInCommand(){
-        return new BeltInCommand(sm.getBeltSubsystem());
+    public Command getBeltInCommand(double time){
+        return new BeltInCommand(sm.getBeltSubsystem(), time);
     }
     public Command getBeltOutCommand(){
         return new BeltOutCommand(sm.getBeltSubsystem());
@@ -62,19 +65,23 @@ public class CommandFactory {
     public Command getDriveUntilBallPickUpCommand() {
         return new DriveUntilBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
     }
+    public Command getDriveUntilVisionBallPickupCommand(){
+        return new DriveUntilVisionBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
+    }
     public Command getAutonomousCommand(){
         return getAutonomousCommand1();
     }
     public Command getAutonomousCommand1(){
         return new SequentialCommandGroup(
-            getBeltInCommand(),
+            getBeltInCommand(0.5),
             new WaitCommand(1.0),
             getBeltStopCommand(),
             getTurnByAngleCommand(180),
-            getDriveUntilBallPickUpCommand(),
-            getBeltInCommand(),
+            getDriveUntilVisionBallPickupCommand(),
+            getBeltInCommand(0.15),
             new WaitCommand(5),
             getBeltStopCommand()
         );
     }
+
 }
