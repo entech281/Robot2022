@@ -31,7 +31,7 @@ public class OperatorInterface {
                 .add();
 
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTIN)
-                .whenPressed(commandFactory.getBeltInCommand())
+                .whenPressed(commandFactory.getAutoBeltCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();
         driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.BELTOUT)
@@ -55,7 +55,7 @@ public class OperatorInterface {
                 .whenReleased(commandFactory.getHookStopCommand())
                 .add();                
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_IN)
-                .whenPressed(commandFactory.getBeltInCommand())
+                .whenPressed(commandFactory.getAutoBeltCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_OUT)

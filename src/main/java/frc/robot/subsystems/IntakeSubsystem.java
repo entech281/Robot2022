@@ -17,7 +17,7 @@ public class IntakeSubsystem extends EntechSubsystem {
   private Timer m_timer;
   private final double timerIgnoreUntil = 0.2;
   private final double timerAverageUntil = 0.7;
-  private final double ballDetectedThreshold = 1.1;
+  private final double ballDetectedThreshold = 1.05;
   private double avgCurrent;
   private int avgCount;
   private boolean ballDetected = false;

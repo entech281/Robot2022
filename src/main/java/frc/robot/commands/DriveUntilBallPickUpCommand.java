@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.ColorSensorSubsystem;
 
 
 public class DriveUntilBallPickUpCommand extends EntechCommandBase {
@@ -32,11 +32,11 @@ public class DriveUntilBallPickUpCommand extends EntechCommandBase {
 
     public void execute(){
         double adjustment = m_PID.calculate( m_vision.getBallX() - 0);
-        if ((adjustment > 0) && (adjustment < 0.25)) {
-            adjustment = 0.25;
+        if ((adjustment > 0) && (adjustment < 0.30)) {
+            adjustment = 0.3;
         }
-        if ((adjustment < 0) && (adjustment > -0.25)) {
-            adjustment = -0.25;
+        if ((adjustment < 0) && (adjustment > -0.3)) {
+            adjustment = -0.3;
         }
        m_drive.arcadeDrive( m_speed, adjustment);
     }

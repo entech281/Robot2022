@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
@@ -23,6 +24,9 @@ public class CommandFactory {
     public Command getTurnByAngleCommand(double angle){
         return new TurnByAngleCommand(sm.getDriveSubsystem(), angle);
     }
+    public Command getTurnToGyroAngleCommand(double angle){
+        return new TurnToGyroAngleCommand(sm.getDriveSubsystem(), angle);
+    }
 
     public Command getBeltInCommand(){
         return new BeltInCommand(sm.getBeltSubsystem());
@@ -32,6 +36,9 @@ public class CommandFactory {
     }
     public Command getBeltStopCommand(){
         return new BeltStopCommand(sm.getBeltSubsystem());
+    }
+    public Command getAutoBeltCommand(){
+        return new AutoBeltCommand(sm.getBeltSubsystem(),sm.getColorSensorSubsystem());
     }
 
     public Command getIntakeInCommand(){
@@ -53,6 +60,7 @@ public class CommandFactory {
     public Command getHookStopCommand(){
         return new HookStopCommand(sm.getHookSubsystem());
     }
+
     public Command getVisionDriveCommand(){
         return new VisionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
     }
@@ -64,6 +72,9 @@ public class CommandFactory {
     }
     public Command getDriveUntilEncoderZeroCommand() {
         return new DriveUntilEncoderZeroCommand(sm.getDriveSubsystem(), 0.5);
+    }
+    public Command getResetGyroCommand() {
+        return new InstantCommand(() -> sm.getDriveSubsystem().resetGyro(), sm.getDriveSubsystem());
     }
     public Command getAutonomousCommand(){
         return getAutonomousCommand1();
@@ -78,12 +89,17 @@ public class CommandFactory {
 
     public Command getAutonomousCommand1(){
         return new SequentialCommandGroup(
+            getResetGyroCommand(),
             getShootBallCommand(),
-            getTurnByAngleCommand(180),
-            getDriveUntilBallPickUpCommand(),
+            getTurnByAngleCommand(165),
+            getIntakeInCommand(),
             getBeltInCommand(),
-            new WaitCommand(5),
-            getBeltStopCommand()
+            getDriveUntilBallPickUpCommand(),
+            getIntakeStopCommand(),
+            getBeltStopCommand(),
+            getDriveUntilEncoderZeroCommand(),
+            getTurnToGyroAngleCommand(0),
+            getShootBallCommand()
         );
     }
 }

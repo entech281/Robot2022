@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
@@ -27,6 +28,7 @@ public class DriveSubsystem extends EntechSubsystem {
     private DifferentialDrive robotDrive;
 
     private AHRS navX;
+    private double TIMEOUT_SEC = 30;
 
     @Override
     public void initialize() {
@@ -49,7 +51,17 @@ public class DriveSubsystem extends EntechSubsystem {
         rearLeftEncoder = rearLeftSpark.getEncoder();
         rearRightEncoder = rearRightSpark.getEncoder();
 
+        Timer timer = new Timer();
+        timer.stop();
+        timer.reset();
+        timer.start();
         navX = new AHRS(SPI.Port.kMXP);
+        while (navX.isCalibrating()) {
+            if (timer.get() > TIMEOUT_SEC) {
+                break;
+            }
+        }
+        navX.zeroYaw();
     }
 
     public void feedWatchDog(){
@@ -64,8 +76,6 @@ public class DriveSubsystem extends EntechSubsystem {
         logger.log("Rear Left Encoder Ticks", rearLeftEncoder.getPosition() * -1);
         logger.log("Rear Right Encoder Ticks", rearRightEncoder.getPosition() * -1);
         logger.log("navX angle", getAngle());
-        logger.log("navX acceleration x", navX.getRawAccelX());
-        logger.log("navX acceleration y", navX.getRawAccelY());
         logger.log("navX displacement x", navX.getDisplacementX());
         logger.log("navX displacement y", navX.getDisplacementY());
     }
@@ -73,6 +83,10 @@ public class DriveSubsystem extends EntechSubsystem {
     public void arcadeDrive(double forward, double rotation) {
         robotDrive.arcadeDrive(forward, rotation);
         feedWatchDog();
+    }
+
+    public void resetGyro() {
+        navX.zeroYaw();
     }
 
     public double getAngle() {
@@ -94,6 +108,7 @@ public class DriveSubsystem extends EntechSubsystem {
     public double getEncoderDistance() {
         return (0.5 * (getRightDistance() + getLeftDistance()));
     }
+
     public void setBrake() {
         frontLeftSpark.setIdleMode(IdleMode.kBrake);
         frontRightSpark.setIdleMode(IdleMode.kBrake);

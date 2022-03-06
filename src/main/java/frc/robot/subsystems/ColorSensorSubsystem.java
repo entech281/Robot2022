@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.I2C;
 
 public class ColorSensorSubsystem extends EntechSubsystem{
     private ColorSensorV3  colorSensor;
-    private final static int proximityThreshold = 70;
+    private final static int proximityThreshold = 110;
 
     @Override
     public void initialize() {

@@ -7,7 +7,7 @@ public class AutoBeltCommand extends EntechCommandBase{
     private final BeltSubsystem m_belt;
     private Boolean wasBallPresent;
 
-    public AutoBeltCommand(ColorSensorSubsystem color, BeltSubsystem belt ){
+    public AutoBeltCommand(BeltSubsystem belt, ColorSensorSubsystem color){
         super(color, belt);
         m_color = color;
         m_belt = belt;
@@ -33,17 +33,11 @@ public class AutoBeltCommand extends EntechCommandBase{
             return true;
         }
         return false;
-            
         
     }
-
-    
+   
     @Override
-    public void execute(){
-        
-            
-            
-        
+    public void execute(){        
     }
     
 }
