@@ -75,6 +75,14 @@ public class CommandFactory {
     public Command getTurnUntillBallSeenCommand() {
         return new TurnUntillBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
     }
+    public Command getShootBallCommand(){
+        return new SequentialCommandGroup(
+            getBeltInCommand(),
+            new WaitCommand(1.0),
+            getBeltStopCommand()
+        );
+    }
+
     public Command getAutonomousCommand(int choice){
         if (choice == 1){
             return getAutonomousCommand1();
@@ -84,14 +92,6 @@ public class CommandFactory {
         }
         return getAutonomousCommand0();
     }
-    public Command getShootBallCommand(){
-        return new SequentialCommandGroup(
-            getBeltInCommand(),
-            new WaitCommand(1.0),
-            getBeltStopCommand()
-        );
-    }
-
     public Command getAutonomousCommand0(){
         return new SequentialCommandGroup(
             getResetGyroCommand(),
