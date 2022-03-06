@@ -28,7 +28,7 @@ public class TurnUntillBallSeenCommand extends EntechCommandBase {
         m_drive.resetEncoders();
         m_drive.setBrake();
         m_PID.setSetpoint(0);
-        m_PID.setTolerance(3);  // IN DEGREES
+        m_PID.setTolerance(7);  // IN DEGREES
     }
 
     public void execute(){
