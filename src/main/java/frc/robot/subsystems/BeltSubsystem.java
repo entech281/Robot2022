@@ -28,6 +28,7 @@ public class BeltSubsystem extends EntechSubsystem {
   @Override
   public void initialize(){
     m_motor = new TalonSRX(RobotConstants.CAN.BELT_MOTOR);
+    m_timer = new Timer();
     currentMode = BeltMode.stop;
   }
 

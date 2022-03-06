@@ -30,6 +30,9 @@ public class CommandFactory {
     public Command getBeltInCommand(double time){
         return new BeltInCommand(sm.getBeltSubsystem(), time);
     }
+    public Command getBeltInCommand(){
+        return new BeltInCommand(sm.getBeltSubsystem());
+    }
     public Command getBeltOutCommand(){
         return new BeltOutCommand(sm.getBeltSubsystem());
     }
