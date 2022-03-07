@@ -1,5 +1,5 @@
-package frc;
+package frc.robot;
 
 public interface BallDetector {
-    public Boolean isBallPresent();
+    public boolean isBallPresent();
 }

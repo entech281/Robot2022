@@ -6,7 +6,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class TurnToGyroAngleCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
     private double m_finalAngle;
-    private double m_initalAngle;
     private double angle;
     private PIDController m_PID;
     private double m_minTurnSpeed = 0.3;
@@ -20,7 +19,6 @@ public class TurnToGyroAngleCommand extends EntechCommandBase {
     }
     
     public void initialize(){
-        m_initalAngle = m_drive.getAngle();
         m_finalAngle = angle;
         m_drive.arcadeDrive(0, 0);
         m_drive.resetEncoders();

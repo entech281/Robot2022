@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.controllers.TalonPositionController;
 import frc.robot.controllers.TalonSettings;
 import frc.robot.controllers.TalonSettingsBuilder;
+import frc.robot.BallDetector;
 import frc.robot.RobotConstants;
 
-public class IntakeSubsystem extends EntechSubsystem {
+public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private TalonSRX m_armMotor;
   private TalonSRX m_rollerMotor;
 
