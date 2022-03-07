@@ -75,12 +75,10 @@ while True:
             continue
         x,y,w,h = cv2.boundingRect(contour)
         if (w>2) and (h>2):
-
-
             ratio = float(max(w,h))/float(min(w,h))
             xc = x + w//2
             yc = y + h//2
-            if (xc >= last_x) and (xc < last_x + last_w) and (yc >= last_y) and (yc <= last_y + last_h):
+            if (xc >= last_x) and (xc <= last_x + last_w) and (yc >= last_y) and (yc <= last_y + last_h):
                 ratio = min(ratio, last_ratio)
             if ratio < indx_ratio:
                 indx_ratio = ratio

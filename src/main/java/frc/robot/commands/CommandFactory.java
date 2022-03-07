@@ -12,6 +12,7 @@ import frc.robot.subsystems.SubsystemManager;
 public class CommandFactory {
 
     private final SubsystemManager sm;
+
     public CommandFactory(SubsystemManager subsystemManager){
         this.sm = subsystemManager;
     }
@@ -69,11 +70,14 @@ public class CommandFactory {
     public Command getDriveUntilEncoderZeroCommand() {
         return new DriveUntilEncoderZeroCommand(sm.getDriveSubsystem(), 0.5);
     }
+    public Command getDriveUntilVisionBallPickupCommand(){
+        return new DriveUntilVisionBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
+    }
     public Command getResetGyroCommand() {
         return new InstantCommand(() -> sm.getDriveSubsystem().resetGyro(), sm.getDriveSubsystem());
     }
     public Command getTurnUntillBallSeenCommand() {
-        return new TurnUntillBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
+        return new TurnUntilBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
     }
     public Command getShootBallCommand(){
         return new SequentialCommandGroup(
