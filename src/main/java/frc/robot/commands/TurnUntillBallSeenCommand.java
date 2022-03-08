@@ -6,24 +6,18 @@ import frc.robot.subsystems.VisionSubsystem;
 
 public class TurnUntillBallSeenCommand extends EntechCommandBase {
     private final DriveSubsystem m_drive;
-    private double m_finalAngle;
-    private double m_initalAngle;
-    private double angle;
     private PIDController m_PID;
     private VisionSubsystem m_vision;
-    private double m_minTurnSpeed = 0.3;
-    private double m_maxTurnSpeed = 0.7;
 
     public TurnUntillBallSeenCommand(DriveSubsystem drive, VisionSubsystem vision){
         super(drive);
         m_drive = drive;
         m_vision = vision;
         m_PID = new PIDController(0.015, 0, 0);
+
     }
     
     public void initialize(){
-        m_initalAngle = m_drive.getAngle();
-        m_finalAngle = m_initalAngle + angle;
         m_drive.arcadeDrive(0, 0);
         m_drive.resetEncoders();
         m_drive.setBrake();
