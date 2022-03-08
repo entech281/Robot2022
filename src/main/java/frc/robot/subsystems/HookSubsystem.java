@@ -37,6 +37,10 @@ public class HookSubsystem extends EntechSubsystem {
     m_DownLimit = new DigitalInput(RobotConstants.DIGITAL_IO.HOOK_DOWN_LIMIT);
   }
 
+  public boolean isLimitSwitchHit(){
+    return m_motor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
   @Override
   public void periodic() {
     // TODO: the checks against the limit switches below are reversed since there are currently
@@ -55,6 +59,7 @@ public class HookSubsystem extends EntechSubsystem {
       m_motor.set(ControlMode.PercentOutput, -motorSpeed);
     }
     logger.log("hook current",m_motor.getSupplyCurrent());
+    logger.log("hook limit switch:", isLimitSwitchHit());
   }
 
   public void up() {

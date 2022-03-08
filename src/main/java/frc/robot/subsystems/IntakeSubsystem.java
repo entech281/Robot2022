@@ -29,8 +29,8 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private boolean ballDetected = false;
   private boolean intakeHomed = false;
   private double armUpPosition = 0.0;
-  private double armDownPosition = 400.0;
-  private double downIncrement = 15.0;
+  private double armDownPosition = 50000.0;
+  private double downIncrement = 500.0;
   private double armDesiredPosition = 1.0;
 
 
@@ -41,7 +41,6 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private final double rollerSpeed = 1.0;
 
   
-  private ArmMode currentArmMode;
 
   public IntakeSubsystem() {
   }
@@ -90,7 +89,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   }
 
   public boolean isLimitSwitchHit(){
-    return m_armMotor.getSensorCollection().isRevLimitSwitchClosed();
+    return m_armMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
 
   public void reset(){
@@ -149,7 +148,8 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     }
     logger.log("roller current", current);
     logger.log("roller detected ball", isBallPresent());
-    logger.log("Intake Arm Desired Position:", armDesiredPosition);
+    logger.log("Intake Arm Current Position:", armMotorController.getActualPosition());
+    logger.log("Intake Arm Limit Switch:", isLimitSwitchHit());
   }
 
   public void armsDown() {
