@@ -28,6 +28,11 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private int avgCount;
   private boolean ballDetected = false;
   private boolean intakeHomed = false;
+  private double armUpPosition = 0.0;
+  private double armDownPosition = 400.0;
+  private double downIncrement = 15.0;
+  private double armDesiredPosition = 1.0;
+
 
   public enum RollerMode{
     off, in, out
@@ -35,9 +40,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private RollerMode currentRollerMode;
   private final double rollerSpeed = 1.0;
 
-  public enum ArmMode {
-    up, down, deploying, retracting 
-  }
+  
   private ArmMode currentArmMode;
 
   public IntakeSubsystem() {
@@ -65,14 +68,24 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     m_armMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     m_timer = new Timer();
     currentRollerMode = RollerMode.off;
-    currentArmMode = ArmMode.up;
+    
   }
 
   public void armGoToHome(){
     m_armMotor.set(ControlMode.PercentOutput, 0.15);
   }
   
-  public Boolean isatHome() {
+  public void nudgeArmDown() {
+    armDownPosition += downIncrement;
+    armDesiredPosition = armDownPosition;
+    }
+
+
+  public void nudgeArmUp() {
+    armDownPosition -= downIncrement;
+    armDesiredPosition = armDownPosition;
+  }
+  public Boolean knowsHome() {
     return intakeHomed;
   }
 
@@ -92,13 +105,19 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
        reset();
        intakeHomed = true;
      }
-     if (!isatHome()){
+     if (!knowsHome()){
        armGoToHome();
      }
 
     double current;
     // Manage the Arm
     //   TODO: Implement arm management
+    if (knowsHome()){
+      armMotorController.setDesiredPosition(armDesiredPosition);
+    }
+    else{
+      armGoToHome();
+    }
 
 
 
@@ -130,19 +149,17 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     }
     logger.log("roller current", current);
     logger.log("roller detected ball", isBallPresent());
+    logger.log("Intake Arm Desired Position:", armDesiredPosition);
   }
 
   public void armsDown() {
-    if (currentArmMode != ArmMode.down) {
-      currentArmMode = ArmMode.deploying;
+      armMotorController.setDesiredPosition(armDownPosition);
     }
-  }
+
 
   public void armsUp() {
-    if (currentArmMode != ArmMode.up) {
-      currentArmMode = ArmMode.retracting;
+      armMotorController.setDesiredPosition(armUpPosition);
     }
-  }
 
   public void rollersIn() {
     currentRollerMode = RollerMode.in;
