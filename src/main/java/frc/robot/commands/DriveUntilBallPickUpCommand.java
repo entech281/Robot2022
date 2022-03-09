@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.subsystems.ColorSensorSubsystem;
+import frc.robot.BallDetector;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
@@ -10,14 +10,14 @@ public class DriveUntilBallPickUpCommand extends EntechCommandBase {
     private final double m_speed;
     private final DriveSubsystem m_drive;
     private final VisionSubsystem m_vision;
-    private final ColorSensorSubsystem m_color;
+    private final BallDetector m_detector;
     private PIDController m_PID;
 
-    public DriveUntilBallPickUpCommand(DriveSubsystem drive, VisionSubsystem vision, ColorSensorSubsystem color, double speed){
-        super(drive, vision, color);
+    public DriveUntilBallPickUpCommand(DriveSubsystem drive, VisionSubsystem vision, BallDetector detector, double speed){
+        super(drive, vision);
         m_vision = vision;
         m_drive = drive;
-        m_color = color;
+        m_detector = detector;
         m_speed = speed;
         m_PID = new PIDController(-0.004, 0, 0);
     }
@@ -42,7 +42,7 @@ public class DriveUntilBallPickUpCommand extends EntechCommandBase {
     }
 
     public boolean isFinished(){
-        if (m_color.isBallPresent()){
+        if (m_detector.isBallPresent()){
             return true;
         }
         return false;

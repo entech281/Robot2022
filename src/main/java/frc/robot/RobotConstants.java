@@ -34,14 +34,18 @@ public final class RobotConstants {
         public static final int HOOKDOWN= 12;
     }
     public interface OPERATOR_STICK {
-        public static final int INTAKE_DEPLOY = 2;
-        public static final int INTAKE_RETRACT = 3;
-        public static final int INTAKE_FORWARD = 7;
+        public static final int INTAKE_DEPLOY = 3;
+        public static final int INTAKE_NUDGE_DOWN = 4;
+        public static final int INTAKE_NUDGE_UP = 5;
         public static final int INTAKE_REVERSE = 8;
-        public static final int BELT_IN = 9;
+        public static final int BELT_IN  = 9;
         public static final int BELT_OUT = 10;
-        public static final int HOOK_UP = 11;
-        public static final int HOOK_DOWN= 12;
+        public static final int FIRE = 11;
+        public static final int HOOK_UP = 12;
+        public static final int HOOK_DOWN = 13;
+        public static final int AUTO1 = 6;
+        public static final int AUTO2 = 7;
+
     }
     public interface CAN {
         public static final int FRONT_RIGHT_MOTOR = 1;

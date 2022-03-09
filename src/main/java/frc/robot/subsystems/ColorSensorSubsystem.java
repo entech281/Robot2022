@@ -3,8 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.I2C;
 // import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.BallDetector;
 
-public class ColorSensorSubsystem extends EntechSubsystem{
+public class ColorSensorSubsystem extends EntechSubsystem implements BallDetector {
     private ColorSensorV3  colorSensor;
     private final static int proximityThreshold = 110;
 

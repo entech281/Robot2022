@@ -54,14 +54,35 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getHookDownCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
                 .add();                
+        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNUNTILLBALLSEEN)
+                .whenPressed(commandFactory.getTurnUntillBallSeenCommand())
+                .add();
+
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_NUDGE_DOWN)
+                .whileHeld(commandFactory.getIntakeArmNudgeDownCommand())
+                .add();
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_NUDGE_UP)
+                .whileHeld(commandFactory.getIntakeArmNudgeUpCommand())
+                .add();
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
+                .whenPressed(commandFactory.getIntakeDeployCommand())
+                .whenReleased(commandFactory.getIntakeRetractCommand())
+                .add();
+        // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_REVERSE)
+        //         .whenPressed(commandFactory.getBallReverseCommand())
+        //         .whenRelease(commandFactory.getBallForwardCommand())
+        //         .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_IN)
-                .whenPressed(commandFactory.getAutoBeltCommand())
+                .whenPressed(commandFactory.getBeltInCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.BELT_OUT)
                 .whenPressed(commandFactory.getBeltOutCommand())
                 .whenReleased(commandFactory.getBeltStopCommand())
                 .add();        
+        operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.FIRE)
+                .whenPressed(commandFactory.getShootBallCommand())
+                .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.HOOK_UP)
                 .whenPressed(commandFactory.getHookUpCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
@@ -70,10 +91,16 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getHookDownCommand())
                 .whenReleased(commandFactory.getHookStopCommand())
                 .add();
-        driverJoystickManager.addButton(RobotConstants.DRIVER_STICK.TURNUNTILLBALLSEEN)
-                .whenPressed(commandFactory.getTurnUntillBallSeenCommand())
-                .add();
         sm.getDriveSubsystem().setDefaultCommand ( new BetterArcadeDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), driveJoystick) );
     }
 
+    public int getAutonomousChoice() {
+        if (operatorJoystick.getRawButton(RobotConstants.OPERATOR_STICK.AUTO1)) {
+            return 1;
+        }
+        if (operatorJoystick.getRawButton(RobotConstants.OPERATOR_STICK.AUTO2)) {
+            return 2;
+        }
+        return 0;
+    }
 }

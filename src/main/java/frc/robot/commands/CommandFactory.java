@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.SubsystemManager;
 public class CommandFactory {
 
     private final SubsystemManager sm;
+
     public CommandFactory(SubsystemManager subsystemManager){
         this.sm = subsystemManager;
     }
@@ -39,6 +41,16 @@ public class CommandFactory {
     public Command getAutoBeltCommand(){
         return new AutoBeltCommand(sm.getBeltSubsystem(),sm.getColorSensorSubsystem());
     }
+    public Command getShootBallCommand(){
+        return new SequentialCommandGroup(
+            getBeltOutCommand(),
+            new WaitCommand(0.1),
+            getBeltInCommand(),
+            new WaitCommand(1.25),
+            getBeltStopCommand()
+        );
+    }
+
     public Command getIntakeInCommand(){
         return new IntakeInCommand(sm.getIntakeSubsystem());
     }
@@ -48,6 +60,33 @@ public class CommandFactory {
     public Command getIntakeStopCommand(){
         return new IntakeStopCommand(sm.getIntakeSubsystem());
     }
+    public Command getIntakeArmDownCommand(){
+        return new IntakeArmDownCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeArmUpCommand(){
+        return new IntakeArmUpCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeArmNudgeDownCommand(){
+        return new IntakeArmNudgeDownCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeArmNudgeUpCommand(){
+        return new IntakeArmNudgeUpCommand(sm.getIntakeSubsystem());
+    }
+    public Command getIntakeDeployCommand() {
+        return new ParallelCommandGroup(
+            getAutoBeltCommand(),
+            getIntakeInCommand(),
+            getIntakeArmDownCommand()
+        );
+    }
+    public Command getIntakeRetractCommand() {
+        return new ParallelCommandGroup(
+            getBeltStopCommand(),
+            getIntakeStopCommand(),
+            getIntakeArmUpCommand()
+        );
+    }
+
     public Command getHookUpCommand(){
         return new HookUpCommand(sm.getHookSubsystem());
     }
@@ -57,6 +96,7 @@ public class CommandFactory {
     public Command getHookStopCommand(){
         return new HookStopCommand(sm.getHookSubsystem());
     }
+
     public Command getVisionDriveCommand(){
         return new VisionDriveCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem());
     }
@@ -69,24 +109,26 @@ public class CommandFactory {
     public Command getDriveUntilEncoderZeroCommand() {
         return new DriveUntilEncoderZeroCommand(sm.getDriveSubsystem(), 0.5);
     }
+    public Command getDriveUntilVisionBallPickupCommand(){
+        return new DriveUntilVisionBallPickUpCommand(sm.getDriveSubsystem(), sm.getVisionSubsytem(), sm.getColorSensorSubsystem(), -0.5);
+    }
     public Command getResetGyroCommand() {
         return new InstantCommand(() -> sm.getDriveSubsystem().resetGyro(), sm.getDriveSubsystem());
     }
     public Command getTurnUntillBallSeenCommand() {
-        return new TurnUntillBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
-    }
-    public Command getAutonomousCommand(){
-        return getAutonomousCommand1();
-    }
-    public Command getShootBallCommand(){
-        return new SequentialCommandGroup(
-            getBeltInCommand(),
-            new WaitCommand(1.0),
-            getBeltStopCommand()
-        );
+        return new TurnUntilBallSeenCommand(sm.getDriveSubsystem(),sm.getVisionSubsytem());
     }
 
-    public Command getAutonomousCommand1(){
+    public Command getAutonomousCommand(int choice){
+        if (choice == 1){
+            return getAutonomousCommand1();
+        }
+        if (choice == 2){
+            return getAutonomousCommand2();
+        }
+        return getAutonomousCommand0();
+    }
+    public Command getAutonomousCommand0(){
         return new SequentialCommandGroup(
             getResetGyroCommand(),
             getShootBallCommand(),
@@ -100,5 +142,17 @@ public class CommandFactory {
             getTurnToGyroAngleCommand(0),
             getShootBallCommand()
         );
+    }
+    public Command getAutonomousCommand1(){
+        return new SequentialCommandGroup(
+            getAutonomousCommand0(),
+            getTurnUntillBallSeenCommand(),
+            getIntakeInCommand(),
+            getBeltInCommand(),
+            getDriveUntilBallPickUpCommand()
+        );
+    }
+    public Command getAutonomousCommand2(){
+        return getAutonomousCommand1();
     }
 }

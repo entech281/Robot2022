@@ -6,11 +6,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Timer;
 
 import frc.robot.RobotConstants;
 
 public class BeltSubsystem extends EntechSubsystem {
   private TalonSRX m_motor;
+  private Timer m_timer;
+  public Double beltInTimer = -1.0;
 
   public enum BeltMode{
     stop, in, out
@@ -25,11 +28,16 @@ public class BeltSubsystem extends EntechSubsystem {
   @Override
   public void initialize(){
     m_motor = new TalonSRX(RobotConstants.CAN.BELT_MOTOR);
+    m_timer = new Timer();
     currentMode = BeltMode.stop;
   }
 
   @Override
   public void periodic(){
+    if ((beltInTimer > 0) && (m_timer.get() > beltInTimer)){
+      currentMode = BeltMode.stop;
+      beltInTimer = -1.0;
+    }
     switch (currentMode) {
       case stop:
         logger.log("belt state", "stop");
@@ -55,6 +63,13 @@ public class BeltSubsystem extends EntechSubsystem {
   }
   public void stop(){
     currentMode = BeltMode.stop;
+  }
+  public void intakeFor(double time){
+    currentMode = BeltMode.in;
+    m_timer.stop();
+    m_timer.reset();
+    m_timer.start();
+    beltInTimer = time;
   }
 
   @Override

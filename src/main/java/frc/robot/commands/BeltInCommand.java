@@ -6,30 +6,37 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.BeltSubsystem;
 
+
 /** An example command that uses an example subsystem. */
 public class BeltInCommand extends EntechCommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final BeltSubsystem m_subsystem;
+  private double time;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public BeltInCommand(BeltSubsystem subsystem) {
+  public BeltInCommand(BeltSubsystem subsystem, double sec) {
       super(subsystem);
       m_subsystem = subsystem;
+      time = sec;
+  }
+  public BeltInCommand(BeltSubsystem subsystem) {
+    super(subsystem);
+    m_subsystem = subsystem;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    
   }
 
   @Override
   public void execute() {
-     m_subsystem.intake(); 
+     m_subsystem.intakeFor(time); 
   }
 
   @Override

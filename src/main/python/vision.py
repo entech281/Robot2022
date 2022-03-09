@@ -36,6 +36,11 @@ img = np.zeros(shape = (240, 320, 3), dtype = np.uint8)
 kernel = np.ones((3,3), np.uint8)
 
 rpi_counter = 0
+last_h = 0
+last_w = 0
+last_x = 0
+last_y = 0
+last_ratio = 100
 while True:
     x_rel = 0
     y_rel = 0
@@ -71,8 +76,16 @@ while True:
         x,y,w,h = cv2.boundingRect(contour)
         if (w>2) and (h>2):
             ratio = float(max(w,h))/float(min(w,h))
+            xc = x + w//2
+            yc = y + h//2
+            if (xc >= last_x) and (xc <= last_x + last_w) and (yc >= last_y) and (yc <= last_y + last_h):
+                ratio = min(ratio, last_ratio)
             if ratio < indx_ratio:
                 indx_ratio = ratio
+                indx_x = x
+                indx_y = y
+                indx_w = w
+                indx_h = h
                 indx = i
 
     if indx > -1:
@@ -81,6 +94,11 @@ while True:
         # cv2.drawContours(binary_img, contour, -1, color = (255, 255, 255), thickness = -1)
         ball = cv2.minEnclosingCircle(contour)
         center, size = ball
+        last_x = indx_x
+        last_y = indx_y
+        last_w = indx_w
+        last_h = indx_h
+        last_ratio = indx_ratio
         x, y = center
         x_rel = 160 - x #Positive -> left hand side
         y_rel = 120 - y #Positive -> top half of the screen
