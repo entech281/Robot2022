@@ -28,7 +28,7 @@ public class IntakeArmNudgeDownCommand extends EntechCommandBase{
 
     @Override
     public boolean isFinished(){
-        return true;
+        return false;
     }
 
     @Override

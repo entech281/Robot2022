@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.controllers.TalonPositionController;
 import frc.robot.controllers.TalonSettings;
@@ -20,7 +22,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private TalonSRX m_rollerMotor;
 
   private Timer m_timer;
-  private TalonPositionController armMotorController;
+  private TalonPositionController armMotorController = null;
   private final double timerIgnoreUntil = 0.2;
   private final double timerAverageUntil = 0.7;
   private final double ballDetectedThreshold = 1.05;
@@ -29,9 +31,10 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private boolean ballDetected = false;
   private boolean intakeHomed = false;
   private double armUpPosition = 0.0;
-  private double armDownPosition = 50000.0;
-  private double downIncrement = 500.0;
-  private double armDesiredPosition = 1.0;
+  private double armDownPosition = 55000.0;
+  private double downIncrement = 400.0;
+  private double armDesiredPosition = 0.0;
+  private double homingSpeed = 0.38;
 
 
   public enum RollerMode{
@@ -40,8 +43,10 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private RollerMode currentRollerMode;
   private final double rollerSpeed = 1.0;
 
-  
-
+  public enum ArmMode {
+    down, up
+  }
+  private ArmMode currentArmMode;
   public IntakeSubsystem() {
   }
 
@@ -52,8 +57,8 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
           .noMotorOutputLimits()
           .noMotorStartupRamping()
           .usePositionControl()
-          .withGains(12, 2.56 * 5, 0, 0)
-          .withMotionProfile(1000, 1000, 5)
+          .withGains(0, 0.02, 0, 0)
+          .withMotionProfile(20000, 20000, 400)
           .enableLimitSwitch(true)
           .build();
 
@@ -62,55 +67,18 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   public void initialize() {
     m_armMotor = new TalonSRX(RobotConstants.CAN.ARM_MOTOR);
     m_rollerMotor = new TalonSRX(RobotConstants.CAN.ROLLER_MOTOR);
-    armMotorController = new TalonPositionController(m_armMotor, INTAKEARM, true);
-    armMotorController.configure();
     m_armMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+    m_armMotor.setInverted(true);
+    m_armMotor.setNeutralMode(NeutralMode.Brake);
     m_timer = new Timer();
     currentRollerMode = RollerMode.off;
-    
+    m_armMotor.getSensorCollection().setQuadraturePosition(0, 100); 
   }
-
-  public void armGoToHome(){
-    m_armMotor.set(ControlMode.PercentOutput, 0.15);
-  }
-  
-  public void nudgeArmDown() {
-    armDownPosition += downIncrement;
-    armDesiredPosition = armDownPosition;
-    }
-
-
-  public void nudgeArmUp() {
-    armDownPosition -= downIncrement;
-    armDesiredPosition = armDownPosition;
-  }
-  public Boolean knowsHome() {
-    return intakeHomed;
-  }
-
-  public boolean isLimitSwitchHit(){
-    return m_armMotor.getSensorCollection().isFwdLimitSwitchClosed();
-  }
-
-  public void reset(){
-    armMotorController.resetPosition();
-  }
-
    
   @Override
   public void periodic() {
 
-     if(isLimitSwitchHit()){
-       reset();
-       intakeHomed = true;
-     }
-     if (!knowsHome()){
-       armGoToHome();
-     }
-
-    double current;
     // Manage the Arm
-    //   TODO: Implement arm management
     if (knowsHome()){
       armMotorController.setDesiredPosition(armDesiredPosition);
     }
@@ -118,9 +86,8 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
       armGoToHome();
     }
 
-
-
     // Calculate average running current of the roller
+    double current;
     current = m_rollerMotor.getSupplyCurrent();
     if ((m_timer.get() > timerIgnoreUntil) && (m_timer.get() < timerAverageUntil)) {
       avgCount += 1;
@@ -148,18 +115,61 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     }
     logger.log("roller current", current);
     logger.log("roller detected ball", isBallPresent());
-    logger.log("Intake Arm Current Position:", armMotorController.getActualPosition());
+    logger.log("Intake Arm Current Position:", m_armMotor.getSensorCollection().getQuadraturePosition());
+    logger.log("Intake Arm Desired Position:", armDesiredPosition);
     logger.log("Intake Arm Limit Switch:", isLimitSwitchHit());
   }
 
   public void armsDown() {
-      armMotorController.setDesiredPosition(armDownPosition);
-    }
+    armDesiredPosition = armDownPosition;
+    currentArmMode = ArmMode.down;
+  }
 
 
   public void armsUp() {
-      armMotorController.setDesiredPosition(armUpPosition);
+    armDesiredPosition = armUpPosition;
+    currentArmMode = ArmMode.up;
+  }
+
+  public void armGoToHome(){
+    if ((intakeHomed != true) && isLimitSwitchHit()){
+      intakeHomed = true;
+      m_armMotor.set(ControlMode.PercentOutput, 0.);
+      armMotorController = new TalonPositionController(m_armMotor, INTAKEARM, true);
+      armMotorController.configure();
+      reset();
+      currentArmMode = ArmMode.up;
+    } else {
+       m_armMotor.set(ControlMode.PercentOutput, homingSpeed);
     }
+}
+  
+  public void nudgeArmDown() {
+    armDownPosition -= downIncrement;
+    if (currentArmMode == ArmMode.down) {
+      armDesiredPosition = armDownPosition;
+    }
+  }
+
+
+  public void nudgeArmUp() {
+    armDownPosition += downIncrement;
+    if (currentArmMode == ArmMode.down) {
+      armDesiredPosition = armDownPosition;
+    }
+  }
+  public Boolean knowsHome() {
+    return intakeHomed;
+  }
+
+  public boolean isLimitSwitchHit(){
+    return m_armMotor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  public void reset(){
+    armMotorController.resetPosition();
+  }
+
 
   public void rollersIn() {
     currentRollerMode = RollerMode.in;

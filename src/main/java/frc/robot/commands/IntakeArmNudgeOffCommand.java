@@ -2,14 +2,13 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeArmNudgeUpCommand extends EntechCommandBase {
-
+public class IntakeArmNudgeOffCommand extends EntechCommandBase{
+    
     private final IntakeSubsystem m_intake;
 
-    public IntakeArmNudgeUpCommand(IntakeSubsystem intake){
+    public IntakeArmNudgeOffCommand(IntakeSubsystem intake){
         super(intake);
         m_intake = intake;
-
     }
 
     @Override
@@ -19,7 +18,6 @@ public class IntakeArmNudgeUpCommand extends EntechCommandBase {
 
     @Override 
     public void execute(){
-        m_intake.nudgeArmUp();
     }
 
     @Override
@@ -29,12 +27,12 @@ public class IntakeArmNudgeUpCommand extends EntechCommandBase {
 
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
 
     @Override
     public boolean runsWhenDisabled(){
         return false;
     }
-    
 }
+
