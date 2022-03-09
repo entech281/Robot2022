@@ -66,14 +66,14 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getIntakeArmNudgeUpCommand())
                 .whenReleased(commandFactory.getIntakeArmNudgeOffCommand())
                 .add();
+        // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
+        //         .whenPressed(commandFactory.getIntakeArmDownCommand())
+        //         .whenReleased(commandFactory.getIntakeArmUpCommand())
+        //         .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
-                .whenPressed(commandFactory.getIntakeArmDownCommand())
-                .whenReleased(commandFactory.getIntakeArmUpCommand())
+                .whenPressed(commandFactory.getIntakeDeployCommand())
+                .whenReleased(commandFactory.getIntakeRetractCommand())
                 .add();
-                // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
-                // .whenPressed(commandFactory.getIntakeDeployCommand())
-                // .whenReleased(commandFactory.getIntakeRetractCommand())
-                // .add();
         // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_REVERSE)
         //         .whenPressed(commandFactory.getBallReverseCommand())
         //         .whenRelease(commandFactory.getBallForwardCommand())

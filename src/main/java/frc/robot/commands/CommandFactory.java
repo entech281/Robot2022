@@ -76,9 +76,9 @@ public class CommandFactory {
     }
     public Command getIntakeDeployCommand() {
         return new SequentialCommandGroup(
-            getAutoBeltCommand(),
+            getIntakeArmDownCommand(),
             getIntakeInCommand(),
-            getIntakeArmDownCommand()
+            getAutoBeltCommand()
         );
     }
     public Command getIntakeRetractCommand() {
