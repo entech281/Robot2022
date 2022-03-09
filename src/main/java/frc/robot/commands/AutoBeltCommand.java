@@ -23,6 +23,8 @@ public class AutoBeltCommand extends EntechCommandBase{
         m_belt.intake();
     }
 
+    
+
     public boolean isFinished(){
         if (wasBallPresent){
             return true;

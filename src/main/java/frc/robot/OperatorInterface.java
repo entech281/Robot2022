@@ -71,7 +71,7 @@ public class OperatorInterface {
         //         .whenReleased(commandFactory.getIntakeArmUpCommand())
         //         .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
-                .whenPressed(commandFactory.getIntakeDeployCommand())
+                .whenPressed(commandFactory.getIntakeCommand())
                 .whenReleased(commandFactory.getIntakeRetractCommand())
                 .add();
         // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_REVERSE)

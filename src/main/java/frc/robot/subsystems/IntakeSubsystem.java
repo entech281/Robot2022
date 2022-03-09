@@ -34,7 +34,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private double armDownPosition = 55000.0;
   private double downIncrement = 400.0;
   private double armDesiredPosition = 0.0;
-  private double homingSpeed = 0.38;
+  private double homingSpeed = 0.35;
 
 
   public enum RollerMode{
