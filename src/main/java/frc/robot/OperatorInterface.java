@@ -59,11 +59,17 @@ public class OperatorInterface {
                 .add();
 
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_NUDGE_DOWN)
-                .whileHeld(commandFactory.getIntakeArmNudgeDownCommand())
+                .whenPressed(commandFactory.getIntakeArmNudgeDownCommand())
+                .whenReleased(commandFactory.getIntakeArmNudgeOffCommand())
                 .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_NUDGE_UP)
-                .whileHeld(commandFactory.getIntakeArmNudgeUpCommand())
+                .whenPressed(commandFactory.getIntakeArmNudgeUpCommand())
+                .whenReleased(commandFactory.getIntakeArmNudgeOffCommand())
                 .add();
+        // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
+        //         .whenPressed(commandFactory.getIntakeArmDownCommand())
+        //         .whenReleased(commandFactory.getIntakeArmUpCommand())
+        //         .add();
         operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_DEPLOY)
                 .whenPressed(commandFactory.getIntakeDeployCommand())
                 .whenReleased(commandFactory.getIntakeRetractCommand())

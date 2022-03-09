@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.SubsystemManager;
@@ -72,15 +71,18 @@ public class CommandFactory {
     public Command getIntakeArmNudgeUpCommand(){
         return new IntakeArmNudgeUpCommand(sm.getIntakeSubsystem());
     }
+    public Command getIntakeArmNudgeOffCommand(){
+        return new IntakeArmNudgeOffCommand(sm.getIntakeSubsystem());
+    }
     public Command getIntakeDeployCommand() {
-        return new ParallelCommandGroup(
-            getAutoBeltCommand(),
+        return new SequentialCommandGroup(
+            getIntakeArmDownCommand(),
             getIntakeInCommand(),
-            getIntakeArmDownCommand()
+            getAutoBeltCommand()
         );
     }
     public Command getIntakeRetractCommand() {
-        return new ParallelCommandGroup(
+        return new SequentialCommandGroup(
             getBeltStopCommand(),
             getIntakeStopCommand(),
             getIntakeArmUpCommand()
