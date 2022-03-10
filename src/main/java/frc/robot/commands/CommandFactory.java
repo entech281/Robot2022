@@ -43,10 +43,8 @@ public class CommandFactory {
     }
     public Command getShootBallCommand(){
         return new SequentialCommandGroup(
-            getBeltOutCommand(),
-            new WaitCommand(0.1),
             getBeltInCommand(),
-            new WaitCommand(1.25),
+            new WaitCommand(1.20),
             getBeltStopCommand()
         );
     }
@@ -83,18 +81,21 @@ public class CommandFactory {
         );
     }**/
 
-    public Command getIntakeDeployCommand(){
+    public Command getIntakeCommand(){
         AutoBeltCommand ac = new AutoBeltCommand(sm.getBeltSubsystem(), sm.getColorSensorSubsystem());
         return new IntakeDeployCommand(sm.getIntakeSubsystem(), ac);
     }
-    public Command getIntakeCommand() {
+    // public Command getIntakeDeployCommand(){
+    //     return new BetterIntakeDeployCommand(sm.getIntakeSubsystem(), sm.getBeltSubsystem(), sm.getColorSensorSubsystem());
+    // }
+
+    public Command getIntakeDeployCommand() {
         return new ParallelCommandGroup(
-            getIntakeDeployCommand(),
+            getIntakeCommand(),
             getAutoBeltCommand()
-            
-            
         );
     }
+
     public Command getIntakeRetractCommand() {
         return new SequentialCommandGroup(
             getBeltStopCommand(),

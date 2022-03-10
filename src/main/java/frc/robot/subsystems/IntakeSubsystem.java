@@ -31,7 +31,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private boolean ballDetected = false;
   private boolean intakeHomed = false;
   private double armUpPosition = 0.0;
-  private double armDownPosition = 55000.0;
+  private double armDownPosition = 39800.0;
   private double downIncrement = 400.0;
   private double armDesiredPosition = 0.0;
   private double homingSpeed = 0.35;
@@ -81,10 +81,16 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     // Manage the Arm
     if (knowsHome()){
       armMotorController.setDesiredPosition(armDesiredPosition);
+      if (isLimitSwitchHit()) {
+        reset();
+      }
     }
     else{
       armGoToHome();
     }
+    // if (DriverStation.isEnabled() && (currentArmMode == ArmMode.up) && (isLimitSwitchHit() != true)) {
+    //       nudgeArmUp();
+    // }
 
     // Calculate average running current of the roller
     double current;
@@ -117,7 +123,10 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     logger.log("roller detected ball", isBallPresent());
     logger.log("Intake Arm Current Position:", m_armMotor.getSensorCollection().getQuadraturePosition());
     logger.log("Intake Arm Desired Position:", armDesiredPosition);
+    logger.log("Intake Arm Up Position:", armUpPosition);
+    logger.log("Intake Arm Down Position:", armDownPosition);
     logger.log("Intake Arm Limit Switch:", isLimitSwitchHit());
+    logger.log("Intake Knows Home:", knowsHome());
   }
 
   public void armsDown() {
@@ -145,17 +154,22 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
 }
   
   public void nudgeArmDown() {
-    armDownPosition -= downIncrement;
     if (currentArmMode == ArmMode.down) {
+      armDownPosition += downIncrement;
       armDesiredPosition = armDownPosition;
     }
   }
 
 
   public void nudgeArmUp() {
-    armDownPosition += downIncrement;
     if (currentArmMode == ArmMode.down) {
+      armDownPosition -= downIncrement;
       armDesiredPosition = armDownPosition;
+    }
+    if (currentArmMode == ArmMode.up) {
+      armUpPosition -= downIncrement;
+      armDownPosition -= downIncrement;
+      armDesiredPosition = armUpPosition;
     }
   }
   public Boolean knowsHome() {

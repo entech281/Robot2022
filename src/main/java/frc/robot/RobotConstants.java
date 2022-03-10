@@ -35,8 +35,8 @@ public final class RobotConstants {
     }
     public interface OPERATOR_STICK {
         public static final int INTAKE_DEPLOY = 3;
-        public static final int INTAKE_NUDGE_DOWN = 4;
-        public static final int INTAKE_NUDGE_UP = 5;
+        public static final int INTAKE_NUDGE_UP = 4;
+        public static final int INTAKE_NUDGE_DOWN = 5;
         public static final int INTAKE_REVERSE = 8;
         public static final int BELT_IN  = 9;
         public static final int BELT_OUT = 10;
