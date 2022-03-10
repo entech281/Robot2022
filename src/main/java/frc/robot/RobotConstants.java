@@ -43,8 +43,8 @@ public final class RobotConstants {
         public static final int FIRE = 11;
         public static final int HOOK_UP = 12;
         public static final int HOOK_DOWN = 13;
-        public static final int AUTO1 = 6;
-        public static final int AUTO2 = 7;
+        public static final int AUTO1 = 7;
+        public static final int AUTO2 = 6;
 
     }
     public interface CAN {

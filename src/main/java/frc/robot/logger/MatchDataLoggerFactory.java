@@ -12,6 +12,7 @@ public class MatchDataLoggerFactory extends DataLoggerFactory {
     @Override
     public DataLogger createDataLogger(String name) {
         return new CompositeLogger(new SmartDashboardLogger(name));
+        // return new CompositeLogger(new NullLogger(name));
     }
 
 }

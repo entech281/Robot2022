@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.controllers.TalonPositionController;
 import frc.robot.controllers.TalonSettings;
@@ -22,6 +23,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private TalonSRX m_rollerMotor;
 
   private Timer m_timer;
+  private Timer m_armUpTimer;
   private TalonPositionController armMotorController = null;
   private final double timerIgnoreUntil = 0.2;
   private final double timerAverageUntil = 0.7;
@@ -71,6 +73,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     m_armMotor.setInverted(true);
     m_armMotor.setNeutralMode(NeutralMode.Brake);
     m_timer = new Timer();
+    m_armUpTimer = new Timer();
     currentRollerMode = RollerMode.off;
     m_armMotor.getSensorCollection().setQuadraturePosition(0, 100); 
   }
@@ -81,16 +84,14 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     // Manage the Arm
     if (knowsHome()){
       armMotorController.setDesiredPosition(armDesiredPosition);
-      if (isLimitSwitchHit()) {
-        reset();
-      }
     }
     else{
       armGoToHome();
     }
-    // if (DriverStation.isEnabled() && (currentArmMode == ArmMode.up) && (isLimitSwitchHit() != true)) {
-    //       nudgeArmUp();
-    // }
+    if (DriverStation.isEnabled() && (m_armUpTimer.get() > 1.0) && (currentArmMode == ArmMode.up) && (isLimitSwitchHit() != true)) {
+      armUpPosition -= downIncrement;
+      armDesiredPosition = armUpPosition;
+    }
 
     // Calculate average running current of the roller
     double current;
@@ -138,6 +139,9 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   public void armsUp() {
     armDesiredPosition = armUpPosition;
     currentArmMode = ArmMode.up;
+    m_armUpTimer.stop();
+    m_armUpTimer.reset();
+    m_armUpTimer.start();
   }
 
   public void armGoToHome(){
@@ -165,11 +169,6 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     if (currentArmMode == ArmMode.down) {
       armDownPosition -= downIncrement;
       armDesiredPosition = armDownPosition;
-    }
-    if (currentArmMode == ArmMode.up) {
-      armUpPosition -= downIncrement;
-      armDownPosition -= downIncrement;
-      armDesiredPosition = armUpPosition;
     }
   }
   public Boolean knowsHome() {

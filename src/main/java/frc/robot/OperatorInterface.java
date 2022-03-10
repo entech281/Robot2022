@@ -74,6 +74,7 @@ public class OperatorInterface {
                 .whenPressed(commandFactory.getIntakeDeployCommand())
                 .whenReleased(commandFactory.getIntakeRetractCommand())
                 .add();
+
         // operatorJoystickManager.addButton(RobotConstants.OPERATOR_STICK.INTAKE_REVERSE)
         //         .whenPressed(commandFactory.getBallReverseCommand())
         //         .whenRelease(commandFactory.getBallForwardCommand())

@@ -150,6 +150,15 @@ public class CommandFactory {
             getResetGyroCommand(),
             getShootBallCommand(),
             getTurnByAngleCommand(165),
+            getDriveStraightGyroCommand(48.0, 0.5)
+        );
+    }
+    public Command getAutonomousCommand1(){
+        return new SequentialCommandGroup(
+            getResetGyroCommand(),
+            getShootBallCommand(),
+            getTurnByAngleCommand(165),
+            getIntakeArmDownCommand(),
             getIntakeInCommand(),
             getBeltInCommand(),
             getDriveUntilBallPickUpCommand(),
@@ -160,16 +169,13 @@ public class CommandFactory {
             getShootBallCommand()
         );
     }
-    public Command getAutonomousCommand1(){
+    public Command getAutonomousCommand2(){
         return new SequentialCommandGroup(
-            getAutonomousCommand0(),
+            getAutonomousCommand1(),
             getTurnUntillBallSeenCommand(),
             getIntakeInCommand(),
             getBeltInCommand(),
             getDriveUntilBallPickUpCommand()
         );
-    }
-    public Command getAutonomousCommand2(){
-        return getAutonomousCommand1();
     }
 }
