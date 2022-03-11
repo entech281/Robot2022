@@ -53,7 +53,7 @@ public class BeltSubsystem extends EntechSubsystem {
         m_motor.set(ControlMode.PercentOutput, motorSpeed);
         break;
     }
-    logger.log("belt current",m_motor.getSupplyCurrent());
+    // logger.log("belt current",m_motor.getSupplyCurrent());
   }
 
   public void setSpeed(double speed) {

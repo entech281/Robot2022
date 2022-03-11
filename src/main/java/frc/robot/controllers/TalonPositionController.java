@@ -20,7 +20,6 @@ public class TalonPositionController extends BaseTalonController implements Posi
      */
     @Override
     public void setDesiredPosition(double desiredPosition) {
-        SmartDashboard.putNumber("Input to controller", desiredPosition);
         this.desiredPosition = desiredPosition;
         talon.set(settings.controlMode, correctDirection(desiredPosition));
     }

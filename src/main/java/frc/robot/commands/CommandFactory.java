@@ -149,8 +149,8 @@ public class CommandFactory {
         return new SequentialCommandGroup(
             getResetGyroCommand(),
             getShootBallCommand(),
-            getTurnByAngleCommand(165),
-            getDriveStraightGyroCommand(48.0, 0.5)
+            // for backward, set speed negative
+            getDriveStraightGyroCommand(48.0, -0.5)
         );
     }
     public Command getAutonomousCommand1(){
