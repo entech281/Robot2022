@@ -19,7 +19,7 @@ public class BeltSubsystem extends EntechSubsystem {
     stop, in, out
   }
   private BeltMode currentMode = BeltMode.stop;
-  private final double motorSpeed = 1.0;
+  private double motorSpeed = 1.0;
 
   public BeltSubsystem(){
   }
@@ -42,6 +42,7 @@ public class BeltSubsystem extends EntechSubsystem {
       case stop:
         logger.log("belt state", "stop");
         m_motor.set(ControlMode.PercentOutput, 0.0);
+        setSpeed(1.0);
         break;
       case in:
         logger.log("belt state", "in");
@@ -54,7 +55,10 @@ public class BeltSubsystem extends EntechSubsystem {
     }
     logger.log("belt current",m_motor.getSupplyCurrent());
   }
-  
+
+  public void setSpeed(double speed) {
+    motorSpeed = speed;    
+  }
   public void intake(){
     currentMode = BeltMode.in;
   }

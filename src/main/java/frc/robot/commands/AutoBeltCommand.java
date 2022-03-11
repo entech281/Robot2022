@@ -17,8 +17,10 @@ public class AutoBeltCommand extends EntechCommandBase{
 
     @Override
     public void initialize(){
+        m_belt.setSpeed(0.9);
         if (m_color.isBallPresent()){
             wasBallPresent = true;
+            m_belt.setSpeed(1.0);
         }
         m_belt.intake();
     }
