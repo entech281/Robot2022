@@ -34,6 +34,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   private boolean intakeHomed = false;
   private double armUpPosition = 0.0;
   private double armDownPosition = 39800.0;
+  private double refDownPosition = 39800.0;
   private double downIncrement = 400.0;
   private double armDesiredPosition = 0.0;
   private double homingSpeed = 0.35;
@@ -74,6 +75,8 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     m_armMotor.setNeutralMode(NeutralMode.Brake);
     m_timer = new Timer();
     m_armUpTimer = new Timer();
+    m_armUpTimer.stop();
+    m_armUpTimer.reset();
     currentRollerMode = RollerMode.off;
     m_armMotor.getSensorCollection().setQuadraturePosition(0, 100); 
   }
@@ -89,8 +92,14 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
       armGoToHome();
     }
     if (DriverStation.isEnabled() && (m_armUpTimer.get() > 1.0) && (currentArmMode == ArmMode.up) && (isLimitSwitchHit() != true)) {
-      armUpPosition -= downIncrement;
+      armUpPosition -= downIncrement/10;
       armDesiredPosition = armUpPosition;
+    }
+    if (isLimitSwitchHit()) {
+      reset();
+      rollersStop();
+      m_armUpTimer.stop();
+      m_armUpTimer.reset();
     }
 
     // Calculate average running current of the roller
@@ -122,8 +131,9 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
     }
     logger.log("roller current", current);
     logger.log("roller detected ball", isBallPresent());
-    logger.log("Intake Arm Current Position:", m_armMotor.getSensorCollection().getQuadraturePosition());
-    logger.log("Intake Arm Desired Position:", armDesiredPosition);
+    // logger.log("Intake Arm Current Position:", m_armMotor.getSensorCollection().getQuadraturePosition());
+    logger.log("Intake Arm Desired Position:", armMotorController.getDesiredPosition());
+    logger.log("Intake Arm Actual Position", armMotorController.getActualPosition());
     logger.log("Intake Arm Up Position:", armUpPosition);
     logger.log("Intake Arm Down Position:", armDownPosition);
     logger.log("Intake Arm Limit Switch:", isLimitSwitchHit());
@@ -160,6 +170,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   public void nudgeArmDown() {
     if (currentArmMode == ArmMode.down) {
       armDownPosition += downIncrement;
+      armDownPosition = Math.min(1.5*refDownPosition, armDownPosition);
       armDesiredPosition = armDownPosition;
     }
   }
@@ -168,6 +179,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
   public void nudgeArmUp() {
     if (currentArmMode == ArmMode.down) {
       armDownPosition -= downIncrement;
+      armDownPosition = Math.max(armUpPosition + downIncrement, armDownPosition);
       armDesiredPosition = armDownPosition;
     }
   }
@@ -181,6 +193,9 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
 
   public void reset(){
     armMotorController.resetPosition();
+    armUpPosition = 0;
+    currentArmMode = ArmMode.up;
+    armDownPosition = refDownPosition;
   }
 
 
