@@ -106,7 +106,7 @@ public class IntakeSubsystem extends EntechSubsystem implements BallDetector {
       }
     }
     if (currentArmMode == ArmMode.down) {
-      if (m_armMoveTimer.get() < 0.3) {
+      if (m_armMoveTimer.get() < 0.2) {
          m_armMotor.set(ControlMode.PercentOutput, downSpeed);
       } else {
         m_armMotor.set(ControlMode.PercentOutput, 0.0);

@@ -164,6 +164,7 @@ public class CommandFactory {
             getDriveUntilBallPickUpCommand(),
             getIntakeStopCommand(),
             getBeltStopCommand(),
+            getIntakeArmUpCommand(),
             getDriveUntilEncoderZeroCommand(),
             getTurnToGyroAngleCommand(0),
             getShootBallCommand()
