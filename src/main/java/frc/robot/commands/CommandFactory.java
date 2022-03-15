@@ -157,7 +157,7 @@ public class CommandFactory {
         return new SequentialCommandGroup(
             getResetGyroCommand(),
             getShootBallCommand(),
-            getTurnByAngleCommand(165),
+            getTurnByAngleCommand(180),
             getIntakeArmDownCommand(),
             getIntakeInCommand(),
             getBeltInCommand(),
